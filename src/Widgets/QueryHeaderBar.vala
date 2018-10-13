@@ -20,6 +20,7 @@
 namespace Peeq.Widgets { 
   public class QueryHeaderBar : Gtk.HeaderBar {
     public signal void execute_query ();
+    public signal void open_file ();
 
     Gtk.Spinner spinner;
     Gtk.MenuButton app_menu;
@@ -63,6 +64,9 @@ namespace Peeq.Widgets {
       open_button = new Gtk.Button ();
       open_button.image = new Gtk.Image.from_icon_name ("document-open", Gtk.IconSize.LARGE_TOOLBAR);
       open_button.tooltip_text = ("Open");
+      open_button.clicked.connect (() => {
+        open_file ();
+      });
 
       save_button = new Gtk.Button ();
       save_button.image = new Gtk.Image.from_icon_name ("document-save", Gtk.IconSize.LARGE_TOOLBAR);
@@ -77,7 +81,7 @@ namespace Peeq.Widgets {
       execute_button.tooltip_text = ("Execute");
       execute_button.add_accelerator ("activate", accel_group, Gdk.keyval_from_name("F5"), 0, Gtk.AccelFlags.VISIBLE);
       execute_button.clicked.connect (() => {
-        execute_query();
+        execute_query ();
       });
 
       cancel_button = new Gtk.Button ();

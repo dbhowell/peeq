@@ -50,5 +50,9 @@ namespace Peeq.Widgets {
     public string get_text () {
       return buffer.text.strip ();
     }
+
+    public void set_text (string text) {
+      buffer.text = text;
+    }
   }
 } 

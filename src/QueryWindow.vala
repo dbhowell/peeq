@@ -57,17 +57,15 @@ namespace Peeq {
       notebook = new DynamicNotebook ();
       notebook.new_tab_requested.connect (on_new_tab_requested);
       notebook.tab_removed.connect (on_tab_removed);
-      notebook.insert_tab (create_tab (), 0);
+      notebook.insert_tab (create_tab (null), 0);
       notebook.show ();
 
       add (notebook);
 
       headerbar = new Widgets.QueryHeaderBar ();
       add_accel_group (headerbar.accel_group);
-      headerbar.execute_query.connect (() => {
-        Widgets.QueryPaned item = (Widgets.QueryPaned) notebook.current.page;
-        item.execute_query ();
-      });
+      headerbar.execute_query.connect (on_execute_query);
+      headerbar.open_file.connect (on_open_file);
 
       set_titlebar (headerbar);
 
@@ -75,7 +73,7 @@ namespace Peeq {
     }     
 
     void on_new_tab_requested () {
-      var tab = create_tab ();
+      var tab = create_tab (null);
 
       notebook.insert_tab (tab, notebook.n_tabs);
       notebook.current = tab;
@@ -83,17 +81,55 @@ namespace Peeq {
 
     void on_tab_removed (Tab tab) {
       if (notebook.n_tabs == 0 && this.visible) {
-        notebook.insert_tab (create_tab (), 0);
+        notebook.insert_tab (create_tab (null), 0);
       }
     }
 
-    Tab create_tab () {
+    Tab create_tab (string? content) {
+      var query_pane = new Widgets.QueryPaned.with_query_command (new Services.QueryCommand.with_connection (connection));
+      if (content != null) {
+        query_pane.set_text (content);
+      }
+
       return 
         new Tab (
           @"Query $(notebook.n_tabs + 1)",
           null,
-          new Widgets.QueryPaned.with_query_command (new Services.QueryCommand.with_connection (connection))
+          query_pane
         );
+    }
+
+    void on_execute_query () {
+      Widgets.QueryPaned item = (Widgets.QueryPaned) notebook.current.page;
+      item.execute_query ();
+    }
+
+    void on_open_file () {
+      Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
+        "Open SQL file", this, Gtk.FileChooserAction.OPEN,
+        "_Cancel",
+        Gtk.ResponseType.CANCEL,
+        "_Open",
+        Gtk.ResponseType.ACCEPT);
+
+      chooser.select_multiple = false;
+
+      Gtk.FileFilter filter = new Gtk.FileFilter ();
+      chooser.set_filter (filter);
+      filter.add_mime_type ("application/sql");
+      filter.add_mime_type ("text/sql");
+      filter.add_mime_type ("text/x-sql");
+      filter.add_mime_type ("text/plain");
+      if (chooser.run () == Gtk.ResponseType.ACCEPT) {
+        string sql_text;
+        FileUtils.get_contents (chooser.get_filename (), out sql_text);
+        var tab = create_tab (sql_text);
+        notebook.insert_tab (tab, -1);
+        notebook.current = tab;
+
+        chooser.close ();
+      }
+
     }
   }
 }

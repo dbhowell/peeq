@@ -64,5 +64,9 @@ namespace Peeq.Widgets {
     public void execute_query () {
       query_command.execute (sql_source_view.get_text ());
     }
+
+    public void set_text (string text) {
+      sql_source_view.set_text (text);
+    }
   }
 }
