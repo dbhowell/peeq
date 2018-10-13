@@ -1,5 +1,7 @@
 # Peeq
 
+![Screenshot](data/screenshot_001.png?raw=true)
+
 ## Building and Installation
 
 You'll need the following dependencies:
