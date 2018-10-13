@@ -44,7 +44,8 @@ executable(
     dependency('gtk+-3.0'),
     dependency('gtksourceview-3.0'),
     dependency('gee-0.8'),
-    dependency('libpq')
+    dependency('libpq'),
+    dependency('granite')
   ],
   install: true
 )
