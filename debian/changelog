@@ -1,3 +1,16 @@
+com.github.dbhowell.peeq (0.2.0) UNRELEASED; urgency=low
+
+  * Fix debian build deps.
+  * Added required deps in meson.build
+
+ -- David Howell <david@dynamicmethods.com.au>  Tue, 13 Oct 2018 00:00:00 +0930
+
+com.github.dbhowell.peeq (0.1.0) UNRELEASED; urgency=low
+
+  * Prepare for houston.
+
+ -- David Howell <david@dynamicmethods.com.au>  Tue, 13 Oct 2018 00:00:00 +0930
+
 com.github.dbhowell.peeq (0.1) UNRELEASED; urgency=low
 
   * Initial Release.
