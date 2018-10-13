@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Peeq
+GenericName=Peeq
+Comment=Postgresql Client
+Categories=Development;Database;
+Exec=com.github.dbhowell.peeq
+Icon=com.github.dbhowell.peeq
+Terminal=false
+Type=Application
+Keywords=Postgresql;Postgres;PSQL;

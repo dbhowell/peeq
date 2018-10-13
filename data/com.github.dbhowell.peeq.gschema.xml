@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="com.github.dbhowell.peeq.window-states">
+    <value nick="Normal" value="0" />
+    <value nick="Maximized" value="1" />
+    <value nick="Fullscreen" value="2" />
+	</enum>
+	<schema id="com.github.dbhowell.peeq.settings" path="/com/github/dbhowell/peeq/settings/" gettext-domain="com.github.dbhowell.peeq">
+		<key name="servers" type="as">
+			<default>[]</default>
+			<summary>Server connection settings</summary>
+		</key>
+	</schema>
+</schemalist>
