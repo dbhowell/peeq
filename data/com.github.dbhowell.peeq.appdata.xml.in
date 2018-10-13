@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 David Howell <davidh@dynamicmethods.com.au> -->
-<component type="desktop">
+<component type="desktop-application">
   <id>com.github.dbhowell.peeq</id>
-  <metadata_license>CC0</metadata_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
   <name>Peeq</name>
   <summary>Postgresql Client</summary>
   <description>
     <p>A Postgresql client for HiDPI screens.</p>
+    <ul>
+      <li>Connect to multiple Postgresql servers</li>
+      <li>One query window per database connection</li>
+      <li>Load SQL files</li>
+    </ul>
   </description>
+  <releases>
+    <release version="0.2.4" date="2018-10-13" urgency="medium">
+      <description>
+        <p>Initial Release</p>
+        <ul>
+          <li>HiDPI support</li>
+          <li>Bug fixes and stability improvements</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <provides>
+    <binary>com.github.dbhowell.peeq</binary>
+  </provides>
   <custom>
 		<value key="x-appcenter-color-primary">#603461</value>
 		<value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
@@ -42,4 +62,20 @@
     <content_attribute id="money-purchasing">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/dbhowell/peeq/master/data/screenshot_001.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dbhowell/peeq/master/data/screenshot_002.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dbhowell/peeq/master/data/screenshot_003.png</image>
+    </screenshot>
+  </screenshots>
+  <developer_name>David Howell</developer_name>
+    <url type="homepage">https://github.com/dbhowell/peeq</url>
+    <url type="bugtracker">https://github.com/dbhowell/peeq/issues</url>
+    <url type="help">https://github.com/dbhowell/peeq/issues</url>
+  <update_contact>davidh@dynamicmethods.com.au</update_contact>
 </component>
