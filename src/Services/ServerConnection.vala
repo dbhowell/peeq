@@ -49,6 +49,7 @@ namespace Peeq.Services {
 		
 			version_command = new QueryCommand.with_connection (connection);
 			version_command.complete.connect (on_version_complete);
+			query_command.error.connect (on_query_error);
 		}
 
 		public ServerConnection.with_connection_string (Utils.ConnectionString connection_string) {
@@ -96,7 +97,7 @@ namespace Peeq.Services {
 
 		private void on_version_complete (QueryResult result) {
 			version = result.rows[0].values[0];
-			query_command.execute ("SELECT datname AS db_name, pg_size_pretty(pg_database_size(datname)) AS db_size FROM pg_catalog.pg_database ORDER BY db_name");
+			query_command.execute ("SELECT datname AS db_name FROM pg_catalog.pg_database ORDER BY db_name");
 		}
 
 		private void on_query_complete (QueryResult result) {
