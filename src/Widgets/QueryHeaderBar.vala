@@ -100,7 +100,7 @@ namespace Peeq.Widgets {
 //      pack_start (save_button);
 //      pack_start (save_as_button);
 
-      pack_end (app_menu);
+//      pack_end (app_menu);
       pack_end (spinner);
     }
   }
