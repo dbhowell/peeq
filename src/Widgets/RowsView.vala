@@ -83,7 +83,12 @@ namespace Peeq.Widgets {
 
       foreach (var i in row.values) {
         var v = Value(typeof (string));
-        v.set_string (i);
+        if (i.length > 80) {
+          v.set_string (i.substring(0, 77) + "...");
+        } else {
+          v.set_string (i);            
+        }
+
         items[index++] = v;
       }
 
