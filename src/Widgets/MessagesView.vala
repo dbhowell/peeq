@@ -36,14 +36,23 @@ namespace Peeq.Widgets {
       if (result.has_error) {
         message = result.error_message;
       } else {
-        message = "";
+        message = result.command_status;
       }
     }
 
     void init_layout () {
       label = new Gtk.Label("");
+      label.hexpand = true;
+      label.set_line_wrap (true);
+      label.justify = Gtk.Justification.LEFT;
 
-      add (label);
+      var scroll = new Gtk.ScrolledWindow (null, null);
+      scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+      scroll.add (label);
+
+      scroll.show_all ();
+
+      add (scroll);
     }
   }
 }
