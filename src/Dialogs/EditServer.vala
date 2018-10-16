@@ -106,6 +106,7 @@ namespace Peeq.Dialogs {
 			entry_pass = new Gtk.Entry ();
 			entry_maintenance_db = new Gtk.Entry ();
 
+			entry_pass.set_visibility (false);
 			entry_port.set_text ("5432");
 			entry_maintenance_db.set_text ("postgres");
 
