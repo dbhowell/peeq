@@ -45,7 +45,8 @@ executable(
     dependency('gtksourceview-3.0'),
     dependency('gee-0.8'),
     dependency('libpq'),
-    dependency('granite')
+    dependency('granite'),
+    meson.get_compiler('vala').find_library('posix')
   ],
   install: true
 )

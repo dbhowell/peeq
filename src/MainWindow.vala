@@ -39,8 +39,6 @@ namespace Peeq {
     }
 
     construct {
-      set_size_request (1024, 768);
-
       settings = new Services.Settings ();
       query_windows = new Gee.ArrayList<QueryWindow> ();
       init_layout ();
@@ -100,12 +98,24 @@ namespace Peeq {
     private void connect_signals () {
       server_list.row_activated.connect (on_server_activated);
       server_list.row_selected.connect (on_server_selected);
-      
+
       headerbar.new_connection.connect (on_new_connection);
       headerbar.remove_connection.connect (on_remove_connection);
 
-      welcome.new_connection.connect (on_new_connection);   
+      welcome.new_connection.connect (on_new_connection);
+
+      Unix.signal_add (Posix.Signal.INT, quit_source_func, Priority.HIGH);
+      Unix.signal_add (Posix.Signal.TERM, quit_source_func, Priority.HIGH);
     }
+
+    public bool quit_source_func () {
+      print("quit_source_func ()\n");
+      save_settings ();
+      destroy ();
+
+      return false;
+    }
+
 
     private void on_page_busy (bool working) {
       headerbar.working = working;
@@ -225,10 +235,25 @@ namespace Peeq {
     private void restore_settings () {
       foreach (var s in settings.servers) {
         Utils.ConnectionString cs = Utils.ConnectionString.parse (s);
-        
+
         if (cs.get("server_name") != null) {
           create_server_item (cs);
         }
+      }
+
+      default_width = settings.window_width;
+      default_height = settings.window_height;
+
+      switch (settings.window_state) {
+        case PeeqWindowState.MAXIMIZED:
+          maximize ();
+          break;
+        case PeeqWindowState.FULLSCREEN:
+          fullscreen ();
+          break;
+        default:
+          move (settings.window_x, settings.window_y);
+          break;
       }
     }
 
@@ -241,8 +266,33 @@ namespace Peeq {
         servers += @"$(server_item.page.server.connection_string)";
       }
 
-      settings.servers = servers; 
+      settings.servers = servers;
+
+      var state = get_window ().get_state ();
+      if (Gdk.WindowState.MAXIMIZED in state) {
+          settings.window_state = PeeqWindowState.MAXIMIZED;
+      } else if (Gdk.WindowState.FULLSCREEN in state) {
+          settings.window_state = PeeqWindowState.FULLSCREEN;
+      } else {
+          settings.window_state = PeeqWindowState.NORMAL;
+          // Save window size
+          int width, height;
+          get_size (out width, out height);
+
+          settings.window_width = width;
+          settings.window_height = height;
+      }
+
+      int x, y;
+      get_position (out x, out y);
+      settings.window_x = x;
+      settings.window_y = y;
+
     }
 
+    protected override bool delete_event (Gdk.EventAny event) {
+      save_settings ();
+      return false;
+    }
   }
 }
