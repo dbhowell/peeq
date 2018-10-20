@@ -10,5 +10,33 @@
 			<default>[]</default>
 			<summary>Server connection settings</summary>
 		</key>
+
+		<key name="window-state" enum="com.github.dbhowell.peeq.window-states">
+			<default>"Normal"</default>
+			<summary>The saved state of the window.</summary>
+      <description>The saved state of the window.</description>
+		</key>
+
+		<key name="window-width" type="i">
+      <default>1024</default>
+      <summary>The saved width of the window.</summary>
+      <description>The saved width of the window. Must be greater than 700, or it will not take effect.</description>
+    </key>
+    <key name="window-height" type="i">
+      <default>768</default>
+      <summary>The saved height of the window.</summary>
+      <description>The saved height of the window. Must be greater than 400, or it will not take effect.</description>
+		</key>
+
+		<key name="window-x" type="i">
+      <default>250</default>
+      <summary></summary>
+      <description></description>
+    </key>
+    <key name="window-y" type="i">
+      <default>250</default>
+      <summary></summary>
+      <description></description>
+		</key>
 	</schema>
 </schemalist>

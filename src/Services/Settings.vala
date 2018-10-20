@@ -17,9 +17,21 @@
 * Boston, MA 02110-1301 USA
 */
 
-namespace Peeq.Services {
-	public class Settings : Granite.Services.Settings {
+namespace Peeq {
+	public enum PeeqWindowState {
+		  NORMAL = 0,
+		  MAXIMIZED = 1,
+		  FULLSCREEN = 2
+	}
+
+	public class Services.Settings : Granite.Services.Settings {
 		public string[] servers { get; set; }
+
+		public int window_width { get; set; }
+    public int window_height { get; set; }
+    public PeeqWindowState window_state { get; set; }
+    public int window_x { get; set; }
+		public int window_y { get; set; }
 
 		public Settings ()  {
       base (Constants.PROJECT_NAME + ".settings");
