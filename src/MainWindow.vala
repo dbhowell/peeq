@@ -28,6 +28,7 @@ namespace Peeq {
     private Gtk.Stack content;
     private Gtk.ScrolledWindow scrolled_window;
     private Gee.ArrayList<QueryWindow> query_windows;
+    private Widgets.ListFooter footer;
 
     public MainWindow (Peeq.Application peeq_app) {
       Object (
@@ -50,7 +51,6 @@ namespace Peeq {
 
       welcome = new Widgets.Welcome ();
 
-      var sidebar = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       server_list = new Widgets.ServerList ();
 
       var paned = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
@@ -60,10 +60,17 @@ namespace Peeq {
       content.hexpand = true;
 
       scrolled_window = new Gtk.ScrolledWindow (null, null);
-      scrolled_window.add (server_list);
-      scrolled_window.vexpand = true;
+      scrolled_window.expand = true;
+      scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
 
-      sidebar.pack_start (scrolled_window, true, true);
+      scrolled_window.add (server_list);
+
+      footer = new Widgets.ListFooter ();
+
+      var sidebar = new Gtk.Grid ();
+      sidebar.orientation = Gtk.Orientation.VERTICAL;
+      sidebar.add (scrolled_window);
+      sidebar.add (footer);
 
       paned.pack1 (sidebar, false, false);
       paned.pack2 (content, true, false);
@@ -99,8 +106,8 @@ namespace Peeq {
       server_list.row_activated.connect (on_server_activated);
       server_list.row_selected.connect (on_server_selected);
 
-      headerbar.new_connection.connect (on_new_connection);
-      headerbar.remove_connection.connect (on_remove_connection);
+      footer.add_server.connect (on_new_connection);
+      footer.remove_server.connect (on_remove_connection);
 
       welcome.new_connection.connect (on_new_connection);
 
@@ -170,9 +177,8 @@ namespace Peeq {
     }
 
     private void on_new_connection () {
-      var dialog = new Dialogs.EditServer ();
+      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel ());
 
-      dialog.set_transient_for (this);
       dialog.response.connect (on_edit_server_response);
       dialog.show_all ();
     }
@@ -184,6 +190,7 @@ namespace Peeq {
         "list-remove",
         Gtk.ButtonsType.CLOSE);
 
+      dialog.transient_for = (Gtk.Window) this.get_toplevel ();
       dialog.add_button ("_Remove", Gtk.ResponseType.APPLY);
 
       dialog.response.connect ((source, response_id) => {
