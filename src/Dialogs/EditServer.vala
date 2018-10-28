@@ -67,7 +67,9 @@ namespace Peeq.Dialogs {
 			set { entry_maintenance_db.set_text (value); }
 		}
 
-		public EditServer () {
+		public EditServer (Gtk.Window parent) {
+			Object (transient_for: parent);
+
 			init_layout ();
 		}
 
