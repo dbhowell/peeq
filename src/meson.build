@@ -23,6 +23,7 @@ executable(
   'Widgets/Welcome.vala',
   'Widgets/DatabaseList.vala',
   'Widgets/DatabaseListItem.vala',
+  'Widgets/ListFooter.vala',
   'Widgets/MessagesView.vala',
   'Widgets/ServerPage.vala',
   'Widgets/SQLSourceView.vala',
