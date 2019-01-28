@@ -22,8 +22,15 @@ namespace Peeq.Widgets {
     Gtk.SourceBuffer buffer;
     Gtk.SourceView source_view;
 
+    public string default_font { get; set; }
+
     public SQLSourceView () {
+      init_settings ();
       init_layout ();
+    }
+
+    void init_settings () {
+      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
     }
 
     void init_layout () {
@@ -39,6 +46,7 @@ namespace Peeq.Widgets {
       source_view.wrap_mode = Gtk.WrapMode.NONE;
       source_view.smart_home_end = Gtk.SourceSmartHomeEndType.AFTER;
       source_view.expand = true;
+      source_view.override_font (Pango.FontDescription.from_string (default_font));
 
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
