@@ -26,6 +26,7 @@ executable(
   'Widgets/ListFooter.vala',
   'Widgets/MessagesView.vala',
   'Widgets/ServerPage.vala',
+  'Widgets/ServerProperties.vala',
   'Widgets/SQLSourceView.vala',
   'Widgets/ResultView.vala',
   'Widgets/RowsView.vala',
@@ -37,7 +38,10 @@ executable(
   'Services/QueryResult.vala',
   'Services/ServerConnection.vala',
   'Dialogs/EditServer.vala',
+  'Utils/ClipboardManager.vala',
   'Utils/ConnectionString.vala',
+  'Utils/DataFormat.vala',
+  'Utils/ValueCellRenderer.vala',
   config_header,
   dependencies: [
     dependency('glib-2.0'),

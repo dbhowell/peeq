@@ -17,10 +17,14 @@
 * Boston, MA 02110-1301 USA
 */
 
+using Gee;
 using Peeq.Services;
 
 namespace Peeq.Widgets {
   public class ResultView : Gtk.Box {
+    public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+
     Gtk.Notebook notebook;
     RowsView rows_view;
     MessagesView messages_view;
@@ -45,6 +49,14 @@ namespace Peeq.Widgets {
     public void set_result (QueryResult result) {
       rows_view.set_result (result);
       messages_view.set_result (result);
+
+      rows_view.on_row_selected.connect((fields, row) => {
+        on_row_selected (fields, row);
+      });
+
+      rows_view.on_copy.connect((fields, row) => {
+        on_copy (fields, row);
+      });
 
       if (result.has_error) {
         notebook.set_current_page (1);

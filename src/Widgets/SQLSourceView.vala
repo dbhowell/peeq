@@ -56,6 +56,7 @@ namespace Peeq.Widgets {
     }
 
     public string get_text () {
+      print(buffer.text.strip ());
       return buffer.text.strip ();
     }
 

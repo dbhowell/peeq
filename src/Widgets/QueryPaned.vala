@@ -18,6 +18,7 @@
 */
 
 using Peeq.Services;
+using Peeq.Utils;
 
 namespace Peeq.Widgets { 
   public class QueryPaned : Gtk.Box {
@@ -27,6 +28,7 @@ namespace Peeq.Widgets {
     SQLSourceView sql_source_view;
     ResultView result_view;
     QueryCommand query_command;
+    ClipboardManager clipboard_manager;
 
     public QueryPaned.with_query_command (QueryCommand query_command) {
       this.query_command = query_command;
@@ -43,8 +45,12 @@ namespace Peeq.Widgets {
     }
 
     void init_layout () {
+      clipboard_manager = new ClipboardManager ();
       sql_source_view = new SQLSourceView ();
       result_view = new ResultView ();
+      result_view.on_copy.connect ((fields, row) => {
+        clipboard_manager.set_text (Utils.DataFormat.formatRow(fields, row));
+      });
 
       paned = new Granite.Widgets.CollapsiblePaned(
         Gtk.Orientation.VERTICAL

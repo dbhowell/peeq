@@ -38,7 +38,8 @@ namespace Peeq.Widgets {
 		private Gtk.Label error_label;
     private Gtk.Stack stack;
     private Gtk.StackSwitcher stack_switcher;
-		
+		private ServerProperties server_properties;
+
 		public ServerPage.with_conninfo (Utils.ConnectionString connection_string) {
 			server = new Services.ServerConnection.with_connection_string (connection_string);
 			server.ready.connect (on_server_ready);
@@ -104,8 +105,16 @@ namespace Peeq.Widgets {
 
       init_databases ();
       init_info ();
+      init_properties ();
 
       show_all ();
+    }
+
+    private void init_properties () {
+      var frame = new Gtk.Frame (null);
+      frame.add (new ServerProperties ());
+
+      //stack.add_titled (frame, "Properties", _("Properties"));
     }
 
     private void init_info () {
@@ -114,7 +123,7 @@ namespace Peeq.Widgets {
       version_label = new Gtk.Label ("");
       frame.add (version_label);
 
-      stack.add_titled (frame, "Info", "Info");
+      stack.add_titled (frame, "Info", _("Info"));
     }
 
     private void init_databases () {
@@ -133,7 +142,6 @@ namespace Peeq.Widgets {
       main_frame.add (list_root);
       
       stack.add_titled (main_frame, "Databases", "Databases");
-
     }
 
 		private void on_server_busy (bool working) {

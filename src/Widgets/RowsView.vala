@@ -17,27 +17,70 @@
 * Boston, MA 02110-1301 USA
 */
 
+using Gtk;
 using Gee;
 using Peeq.Services;
 
 namespace Peeq.Widgets {
   public class RowsView : Gtk.Box {
+    public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+
+    public string default_font { get; set; }
+
     Gtk.TreeView view;
+    Gtk.ListStore store;
+    QueryResult result;
+    int selected_row_index = -1;
 
     public RowsView () {
+      init_settings ();
       init_layout ();
+    }
+
+    void init_settings () {
+      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
     }
 
     void init_layout () {
       view = new Gtk.TreeView ();
       view.expand = true;
       view.enable_grid_lines = Gtk.TreeViewGridLines.BOTH;
+      view.headers_clickable = true;
+      view.reorderable = true;
+      view.activate_on_single_click = false;
+      view.cursor_changed.connect(on_cursor_changed);
+      view.row_activated.connect(on_row_activated);
+      view.key_press_event.connect(on_view_key_press_event);
 
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
       scroll.add (view);
       
       add (scroll);  
+    }
+
+    void on_cursor_changed () {
+      print("on_cursor_changed()\n");
+      TreePath? path;
+      TreeViewColumn? focus_column;
+
+      view.get_cursor (out path, out focus_column);
+
+      print(@"$(path), $(focus_column.width)\n");
+    }
+
+    void on_row_activated (Gtk.TreePath path, Gtk.TreeViewColumn column) {
+      this.selected_row_index = int.parse(path.to_string ());
+      on_row_selected (this.result.fields, this.result.rows[this.selected_row_index]);
+    }
+
+    protected virtual bool on_view_key_press_event (Gdk.EventKey event) {
+      if (event.state == Gdk.ModifierType.CONTROL_MASK && event.keyval == 99 && selected_row_index > -1) {
+        on_copy (this.result.fields, this.result.rows[this.selected_row_index]);
+      }
+
+      return true;
     }
 
     void remove_columns () {
@@ -49,19 +92,35 @@ namespace Peeq.Widgets {
     }
   
     public void set_result (QueryResult result) {
+      this.result = result;
       remove_columns ();
+//      view.model = null;
 
       if (result.fields.size > 0) {
         set_columns (result.fields);
         fill_data (result);
+        view.columns_autosize ();
+        view.headers_clickable = true;
+        view.reorderable = true;
+        view.activate_on_single_click = true;  
       }
     }
     
     void set_columns (ArrayList<QueryResult.Field> fields) {
-      Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+      Utils.ValueCellRenderer cell = new Utils.ValueCellRenderer (this.default_font);
+      cell.editable_set = true;
+      cell.editable = true;
+
+      cell.edited.connect ((path, new_text) => {
+        print (path + "\n");
+        print (new_text + "\n");
+      });
 
       for (int i=0; i < fields.size; i++) {
         view.insert_column_with_attributes (-1, fields[i].name.replace ("_", "__"), cell, "text", i);
+        var c = view.get_column(i);
+        c.resizable = true;
+        c.max_width = 320;
       }
 
       view.model = new Gtk.ListStore.newv (get_types (fields));
@@ -83,11 +142,11 @@ namespace Peeq.Widgets {
 
       foreach (var i in row.values) {
         var v = Value(typeof (string));
-        if (i.length > 80) {
-          v.set_string (i.substring(0, 77) + "...");
-        } else {
+        //if (i.length > 80) {
+        //  v.set_string (i.substring(0, 77) + "...");
+        //} else {
           v.set_string (i);            
-        }
+        //}
 
         items[index++] = v;
       }
@@ -97,7 +156,7 @@ namespace Peeq.Widgets {
 
     void fill_data (QueryResult result) {
       Gtk.TreeIter iter;
-      Gtk.ListStore store = new Gtk.ListStore.newv (get_types(result.fields));
+      store = new Gtk.ListStore.newv (get_types(result.fields));
   
       foreach (var row in result.rows) {
         var columns = new int[row.values.size];
