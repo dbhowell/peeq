@@ -17,27 +17,24 @@
 * Boston, MA 02110-1301 USA
 */
 
+using Peeq.Utils;
+
 namespace Peeq.Widgets { 
   public class SQLSourceView : Gtk.Box {
     Gtk.SourceBuffer buffer;
     Gtk.SourceView source_view;
 
-    public string default_font { get; set; }
-
     public SQLSourceView () {
-      init_settings ();
       init_layout ();
-    }
-
-    void init_settings () {
-      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
     }
 
     void init_layout () {
       var manager = Gtk.SourceLanguageManager.get_default ();
+      var style_scheme_manager = new Gtk.SourceStyleSchemeManager ();
 
       buffer = new Gtk.SourceBuffer (null);
       buffer.language = manager.get_language ("sql");
+      buffer.style_scheme = style_scheme_manager.get_scheme ("solarized-dark");
 
       source_view = new Gtk.SourceView.with_buffer (buffer);
       source_view.show_line_numbers = true;
@@ -46,7 +43,7 @@ namespace Peeq.Widgets {
       source_view.wrap_mode = Gtk.WrapMode.NONE;
       source_view.smart_home_end = Gtk.SourceSmartHomeEndType.AFTER;
       source_view.expand = true;
-      source_view.override_font (Pango.FontDescription.from_string (default_font));
+      source_view.get_style_context ().add_provider (StyleManager.get_mono_style (), Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -54,7 +51,7 @@ namespace Peeq.Widgets {
       
       add (scroll);
     }
-
+  
     public string get_text () {
       return buffer.text.strip ();
     }

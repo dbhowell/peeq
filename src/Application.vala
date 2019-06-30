@@ -19,7 +19,6 @@
 
 namespace Peeq {
   public class Application : Gtk.Application {
-    public string default_font { get; set; }
     private static string _app_cmd_name;
 
     construct {
@@ -28,8 +27,6 @@ namespace Peeq {
 
     public Application () {
       Granite.Services.Logger.initialize ("Peeq");
-
-      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
     }
 
     public static Application _instance = null;

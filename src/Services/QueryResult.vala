@@ -39,11 +39,13 @@ namespace Peeq.Services {
       public string name { get; set; }
       public int format { get; set; }
       public int number { get; set; }
+      public Postgres.Oid ftype { get; set; }
 
-      public Field (string name, int format, int number) {
+      public Field (string name, Postgres.Oid ftype, int format, int number) {
         this.name = name;
         this.format = format;
         this.number = number;
+        this.ftype = ftype;
       }
 
       public string to_string () {
@@ -106,7 +108,7 @@ namespace Peeq.Services {
       ArrayList<Field> items = new ArrayList<Field> ();
 
       for (int i=0; i < result.get_n_fields (); i++) {
-        Field f = new Field (result.get_field_name (i), result.get_field_format (i), i);
+        Field f = new Field (result.get_field_name (i), result.get_field_type (i), result.get_field_format (i), i);
         items.add (f);
       }
 

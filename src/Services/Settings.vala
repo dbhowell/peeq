@@ -32,6 +32,9 @@ namespace Peeq {
     public PeeqWindowState window_state { get; set; }
     public int window_x { get; set; }
 		public int window_y { get; set; }
+		public string style_scheme { get; set; }
+		public string mono_space_font { get; set; }
+		public string mono_space_font_size { get; set; }
 
 		public Settings ()  {
       base (Constants.PROJECT_NAME + ".settings");

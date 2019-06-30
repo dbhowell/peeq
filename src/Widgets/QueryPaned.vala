@@ -18,6 +18,8 @@
 */
 
 using Peeq.Services;
+using Peeq.Utils;
+using Gtk;
 
 namespace Peeq.Widgets { 
   public class QueryPaned : Gtk.Box {
@@ -27,15 +29,19 @@ namespace Peeq.Widgets {
     SQLSourceView sql_source_view;
     ResultView result_view;
     QueryCommand query_command;
+    ClipboardManager clipboard_manager;
+    ActionBar action_bar;
+    Label status_label;
 
     public QueryPaned.with_query_command (QueryCommand query_command) {
       this.query_command = query_command;
       
       this.query_command.error.connect ((message) => {
-        print(@"$(message)\n");
+        //print(@"$(message)\n");
       });
 
       this.query_command.complete.connect ((result) => {
+        status_label.label = @"$(result.rows.size) Records found.";
         set_result (result);
       });
 
@@ -43,8 +49,13 @@ namespace Peeq.Widgets {
     }
 
     void init_layout () {
+      orientation = Orientation.VERTICAL;
+      clipboard_manager = new ClipboardManager ();
       sql_source_view = new SQLSourceView ();
       result_view = new ResultView ();
+      result_view.on_copy.connect ((fields, row) => {
+        clipboard_manager.set_text (Utils.DataFormat.formatRow(fields, row));
+      });
 
       paned = new Granite.Widgets.CollapsiblePaned(
         Gtk.Orientation.VERTICAL
@@ -54,7 +65,15 @@ namespace Peeq.Widgets {
       paned.pack1(sql_source_view, false, false);
       paned.pack2(result_view, false, true);
 
+      status_label = new Label ("");
+      status_label.margin = 12;
+      
+      action_bar = new Gtk.ActionBar ();
+      action_bar.get_style_context ().add_class (Gtk.STYLE_CLASS_INLINE_TOOLBAR);
+      action_bar.pack_end (status_label);
+
       add (paned);
+      add (action_bar);
     }
 
     void set_result (QueryResult result) {
@@ -62,6 +81,7 @@ namespace Peeq.Widgets {
     }
 
     public void execute_query () {
+      status_label.label = @"";
       query_command.execute (sql_source_view.get_text ());
     }
 
