@@ -30,6 +30,12 @@ namespace Peeq.Widgets {
 			bool show = (get_children ().length () > 0);
 			show_no_items (!show);
 
+			set_sort_func ((row1, row2) => {
+				ServerListItem item1 = (ServerListItem)row1;
+				ServerListItem item2 = (ServerListItem)row2;
+
+				return item1.title > item2.title ? 1 : -1;
+			});
 		}
 
 		public void add_server_to_list (ServerPage page) {
