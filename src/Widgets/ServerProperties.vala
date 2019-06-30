@@ -127,13 +127,5 @@ namespace Peeq.Widgets {
 
       show_all ();
     }
-
-    private void on_response () {
-
-    }
-
-    private void test_connection () {
-
-    }
   }
 }

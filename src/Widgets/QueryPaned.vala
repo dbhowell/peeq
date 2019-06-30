@@ -34,7 +34,7 @@ namespace Peeq.Widgets {
       this.query_command = query_command;
       
       this.query_command.error.connect ((message) => {
-        print(@"$(message)\n");
+        //print(@"$(message)\n");
       });
 
       this.query_command.complete.connect ((result) => {

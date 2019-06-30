@@ -122,12 +122,16 @@ namespace Peeq {
       filter.add_mime_type ("text/plain");
       if (chooser.run () == Gtk.ResponseType.ACCEPT) {
         string sql_text;
+        try {
         FileUtils.get_contents (chooser.get_filename (), out sql_text);
         var tab = create_tab (sql_text);
         notebook.insert_tab (tab, -1);
         notebook.current = tab;
 
         chooser.close ();
+        } catch (GLib.FileError e) {
+          print ("A FileError occurred.");
+        }
       }
 
     }

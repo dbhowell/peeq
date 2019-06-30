@@ -3,9 +3,9 @@ using Peeq.Services;
 
 namespace Peeq.Utils {
   public class DataFormat {
-    public static const string DELIMITER = ";";
-    public static const string QUOTE = "'";
-    public static const string NEW_LINE = "\n";
+    public const string DELIMITER = ";";
+    public const string QUOTE = "'";
+    public const string NEW_LINE = "\n";
 
     public static string formatRow (Gee.ArrayList<QueryResult.Field> fields, QueryResult.Row row) {
       var builder = new StringBuilder ();

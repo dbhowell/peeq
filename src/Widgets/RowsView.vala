@@ -61,13 +61,10 @@ namespace Peeq.Widgets {
     }
 
     void on_cursor_changed () {
-      print("on_cursor_changed()\n");
       TreePath? path;
       TreeViewColumn? focus_column;
 
       view.get_cursor (out path, out focus_column);
-
-      print(@"$(path), $(focus_column.width)\n");
     }
 
     void on_row_activated (Gtk.TreePath path, Gtk.TreeViewColumn column) {
@@ -94,15 +91,14 @@ namespace Peeq.Widgets {
     public void set_result (QueryResult result) {
       this.result = result;
       remove_columns ();
-//      view.model = null;
 
       if (result.fields.size > 0) {
         set_columns (result.fields);
         fill_data (result);
-        view.columns_autosize ();
         view.headers_clickable = true;
         view.reorderable = true;
         view.activate_on_single_click = true;  
+        view.columns_autosize ();
       }
     }
     
@@ -110,11 +106,6 @@ namespace Peeq.Widgets {
       Utils.ValueCellRenderer cell = new Utils.ValueCellRenderer (this.default_font);
       cell.editable_set = true;
       cell.editable = true;
-
-      cell.edited.connect ((path, new_text) => {
-        print (path + "\n");
-        print (new_text + "\n");
-      });
 
       for (int i=0; i < fields.size; i++) {
         view.insert_column_with_attributes (-1, fields[i].name.replace ("_", "__"), cell, "text", i);

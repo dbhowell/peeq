@@ -35,9 +35,11 @@ namespace Peeq.Widgets {
 
     void init_layout () {
       var manager = Gtk.SourceLanguageManager.get_default ();
+      var style_scheme_manager = new Gtk.SourceStyleSchemeManager ();
 
       buffer = new Gtk.SourceBuffer (null);
       buffer.language = manager.get_language ("sql");
+      buffer.style_scheme = style_scheme_manager.get_scheme ("solarized-dark");
 
       source_view = new Gtk.SourceView.with_buffer (buffer);
       source_view.show_line_numbers = true;
@@ -46,8 +48,8 @@ namespace Peeq.Widgets {
       source_view.wrap_mode = Gtk.WrapMode.NONE;
       source_view.smart_home_end = Gtk.SourceSmartHomeEndType.AFTER;
       source_view.expand = true;
-      source_view.override_font (Pango.FontDescription.from_string (default_font));
-
+      init_style_provider ();
+      
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
       scroll.add (source_view);
@@ -55,8 +57,18 @@ namespace Peeq.Widgets {
       add (scroll);
     }
 
+    private void init_style_provider () {
+      try {
+        var style = new Gtk.CssProvider ();
+        var font_name = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
+        style.load_from_data ("* {font-family: '%s';}".printf (font_name), -1);
+        source_view.get_style_context ().add_provider (style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);  
+      } catch (GLib.Error e) {
+        print ("An error occurred.");
+      }
+    }
+  
     public string get_text () {
-      print(buffer.text.strip ());
       return buffer.text.strip ();
     }
 

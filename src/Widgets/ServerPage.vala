@@ -38,7 +38,6 @@ namespace Peeq.Widgets {
 		private Gtk.Label error_label;
     private Gtk.Stack stack;
     private Gtk.StackSwitcher stack_switcher;
-		private ServerProperties server_properties;
 
 		public ServerPage.with_conninfo (Utils.ConnectionString connection_string) {
 			server = new Services.ServerConnection.with_connection_string (connection_string);

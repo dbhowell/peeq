@@ -58,18 +58,22 @@ namespace Peeq.Utils {
 			ConnectionString result = new ConnectionString ();
 			string[] key_values = conninfo.split ("' ");
 
-			GLib.Regex r = new GLib.Regex("^(?P<key>[a-z_]+)='(?P<value>.*)$");
-			
-			foreach (var kv in key_values) {
-				if (kv.length > 0) {
-					GLib.MatchInfo info;
+			try {
+				GLib.Regex r = new GLib.Regex("^(?P<key>[a-z_]+)='(?P<value>.*)$");
+				
+				foreach (var kv in key_values) {
+					if (kv.length > 0) {
+						GLib.MatchInfo info;
 
-					r.match(kv, 0, out info);
-					string k = info.fetch_named ("key");
-					string v = unescape_value (info.fetch_named ("value"));
+						r.match(kv, 0, out info);
+						string k = info.fetch_named ("key");
+						string v = unescape_value (info.fetch_named ("value"));
 
-					result.keys.set (k, v);
+						result.keys.set (k, v);
+					}
 				}
+			} catch (GLib.RegexError e) {
+				print ("A RegexError occurred.");
 			}
 
 			return result;
