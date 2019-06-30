@@ -17,20 +17,15 @@
 * Boston, MA 02110-1301 USA
 */
 
+using Peeq.Utils;
+
 namespace Peeq.Widgets { 
   public class SQLSourceView : Gtk.Box {
     Gtk.SourceBuffer buffer;
     Gtk.SourceView source_view;
 
-    public string default_font { get; set; }
-
     public SQLSourceView () {
-      init_settings ();
       init_layout ();
-    }
-
-    void init_settings () {
-      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
     }
 
     void init_layout () {
@@ -48,24 +43,13 @@ namespace Peeq.Widgets {
       source_view.wrap_mode = Gtk.WrapMode.NONE;
       source_view.smart_home_end = Gtk.SourceSmartHomeEndType.AFTER;
       source_view.expand = true;
-      init_style_provider ();
-      
+      source_view.get_style_context ().add_provider (StyleManager.get_mono_style (), Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
       scroll.add (source_view);
       
       add (scroll);
-    }
-
-    private void init_style_provider () {
-      try {
-        var style = new Gtk.CssProvider ();
-        var font_name = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
-        style.load_from_data ("* {font-family: '%s';}".printf (font_name), -1);
-        source_view.get_style_context ().add_provider (style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);  
-      } catch (GLib.Error e) {
-        print ("An error occurred.");
-      }
     }
   
     public string get_text () {

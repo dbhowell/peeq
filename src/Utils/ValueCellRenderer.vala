@@ -8,6 +8,7 @@ namespace Peeq.Utils {
             this.editable = false;
             this.ellipsize = EllipsizeMode.END;
             this.ellipsize_set = true;
+            this.size_points = 12;
         }
     }
 }

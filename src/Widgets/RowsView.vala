@@ -39,7 +39,8 @@ namespace Peeq.Widgets {
     }
 
     void init_settings () {
-      default_font = new GLib.Settings ("org.gnome.desktop.interface").get_string ("monospace-font-name");
+      var settings = new Services.Settings ();
+      default_font = settings.mono_space_font;
     }
 
     void init_layout () {

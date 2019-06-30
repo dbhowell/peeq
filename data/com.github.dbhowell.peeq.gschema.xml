@@ -43,5 +43,15 @@
       <summary>Preferred Style Scheme</summary>
       <description>Set the preferred style scheme.</description>
     </key>
+    <key name="mono-space-font" type="s">
+      <default>'Roboto Mono'</default>
+      <summary>Preferred mono spaced font</summary>
+      <description>Set the preferred mono spaced font for SQL queries and results.</description>
+    </key>
+    <key name="mono-space-font-size" type="s">
+      <default>'12pt'</default>
+      <summary>Preferred mono spaced font size</summary>
+      <description>Set the preferred mono spaced font size for SQL queries and results.</description>
+    </key>
 	</schema>
 </schemalist>

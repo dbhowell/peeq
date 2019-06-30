@@ -41,6 +41,7 @@ executable(
   'Utils/ClipboardManager.vala',
   'Utils/ConnectionString.vala',
   'Utils/DataFormat.vala',
+  'Utils/StyleManager.vala',
   'Utils/ValueCellRenderer.vala',
   config_header,
   dependencies: [
