@@ -81,8 +81,8 @@ namespace Peeq.Widgets {
     }
 
     public void execute_query () {
-      status_label.label = @"";
-      query_command.execute (sql_source_view.get_text ());
+      status_label.label = @"Running...";
+      query_command.execute (sql_source_view.get_sql ());
     }
 
     public void set_text (string text) {

@@ -56,6 +56,26 @@ namespace Peeq.Widgets {
       return buffer.text.strip ();
     }
 
+    public string get_selected_text () {
+      if (!buffer.has_selection) {
+        return "";
+      }
+
+      Gtk.TextIter start;
+      Gtk.TextIter end;
+
+      buffer.get_selection_bounds(out start, out end);
+      return buffer.get_text (start, end, true).strip ();
+    }
+
+    public string get_sql () {
+      if (buffer.has_selection) {
+        return get_selected_text ();
+      }
+
+      return get_text ();
+    }
+
     public void set_text (string text) {
       buffer.text = text;
     }
