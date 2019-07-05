@@ -23,7 +23,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
   public class ResultView : Gtk.Box {
     public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
-    public signal void on_copy (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows);
 
     Gtk.Notebook notebook;
     RowsView rows_view;
@@ -54,8 +54,8 @@ namespace Peeq.Widgets {
         on_row_selected (fields, row);
       });
 
-      rows_view.on_copy.connect((fields, row) => {
-        on_copy (fields, row);
+      rows_view.on_copy.connect((fields, rows) => {
+        on_copy (fields, rows);
       });
 
       if (result.has_error) {

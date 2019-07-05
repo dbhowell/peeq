@@ -46,10 +46,13 @@ namespace Peeq.Services {
         this.format = format;
         this.number = number;
         this.ftype = ftype;
+
+        print(@"$(to_string ())\n");
       }
 
       public string to_string () {
-        return @"Field ( name='$(name)', format=$(format), number=$(number) )";
+        uint id = (uint)ftype;
+        return @"Field ( name='$(name)', type=$(id), format=$(format), number=$(number) )";
       }  
     }
 
