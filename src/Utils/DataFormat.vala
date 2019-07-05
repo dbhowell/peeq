@@ -24,5 +24,15 @@ namespace Peeq.Utils {
 
       return builder.str;
     }
+
+    public static string formatRows (Gee.ArrayList<QueryResult.Field> fields, Gee.ArrayList<QueryResult.Row> rows) {
+      var builder = new StringBuilder ();
+
+      for (var i=0; i < rows.size; i++) {
+        builder.append (DataFormat.formatRow(fields, rows[i]));
+      }
+
+      return builder.str;
+    }
   }
 }

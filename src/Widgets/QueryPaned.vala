@@ -53,8 +53,8 @@ namespace Peeq.Widgets {
       clipboard_manager = new ClipboardManager ();
       sql_source_view = new SQLSourceView ();
       result_view = new ResultView ();
-      result_view.on_copy.connect ((fields, row) => {
-        clipboard_manager.set_text (Utils.DataFormat.formatRow(fields, row));
+      result_view.on_copy.connect ((fields, rows) => {
+        clipboard_manager.set_text (Utils.DataFormat.formatRows(fields, rows));
       });
 
       paned = new Granite.Widgets.CollapsiblePaned(

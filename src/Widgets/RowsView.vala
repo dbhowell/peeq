@@ -24,7 +24,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
   public class RowsView : Gtk.Box {
     public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
-    public signal void on_copy (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows);
 
     public string default_font { get; set; }
 
@@ -53,6 +53,7 @@ namespace Peeq.Widgets {
       view.cursor_changed.connect(on_cursor_changed);
       view.row_activated.connect(on_row_activated);
       view.key_press_event.connect(on_view_key_press_event);
+      view.get_selection ().set_mode (Gtk.SelectionMode.MULTIPLE);
 
       var scroll = new Gtk.ScrolledWindow (null, null);
       scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -75,7 +76,17 @@ namespace Peeq.Widgets {
 
     protected virtual bool on_view_key_press_event (Gdk.EventKey event) {
       if (event.state == Gdk.ModifierType.CONTROL_MASK && event.keyval == 99 && selected_row_index > -1) {
-        on_copy (this.result.fields, this.result.rows[this.selected_row_index]);
+        TreeModel model;
+        GLib.List<TreePath> paths = view.get_selection ().get_selected_rows (out model);
+        ArrayList<QueryResult.Row> rows = new ArrayList<QueryResult.Row> ();
+
+        foreach (var p in paths) {
+          print(p.to_string ());
+          var index = int.parse(p.to_string ());
+          rows.add (this.result.rows[index]);
+        }
+
+        on_copy (this.result.fields, rows);
       }
 
       return true;
