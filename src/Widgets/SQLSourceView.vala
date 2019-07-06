@@ -34,7 +34,7 @@ namespace Peeq.Widgets {
 
       buffer = new Gtk.SourceBuffer (null);
       buffer.language = manager.get_language ("sql");
-      buffer.style_scheme = style_scheme_manager.get_scheme ("solarized-dark");
+      buffer.style_scheme = style_scheme_manager.get_scheme (Peeq.settings.style_scheme);
 
       source_view = new Gtk.SourceView.with_buffer (buffer);
       source_view.show_line_numbers = true;

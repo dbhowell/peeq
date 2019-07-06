@@ -39,8 +39,7 @@ namespace Peeq.Widgets {
     }
 
     void init_settings () {
-      var settings = new Services.Settings ();
-      default_font = settings.mono_space_font;
+
     }
 
     void init_layout () {
@@ -114,10 +113,8 @@ namespace Peeq.Widgets {
     }
     
     void set_columns (ArrayList<QueryResult.Field> fields) {
-      Utils.ValueCellRenderer cell = new Utils.ValueCellRenderer (this.default_font);
-      cell.editable_set = true;
-      cell.editable = true;
-
+      Utils.ValueCellRenderer cell = new Utils.ValueCellRenderer (Utils.StyleManager.get_font_family (), Utils.StyleManager.get_font_size ());
+      
       for (int i=0; i < fields.size; i++) {
         view.insert_column_with_attributes (-1, fields[i].name.replace ("_", "__"), cell, "text", i);
         var c = view.get_column(i);

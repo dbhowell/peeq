@@ -29,6 +29,7 @@ namespace Peeq {
     private Gtk.ScrolledWindow scrolled_window;
     private Gee.ArrayList<QueryWindow> query_windows;
     private Widgets.ListFooter footer;
+    private Gtk.Dialog? preferences_dialog = null;
 
     public MainWindow (Peeq.Application peeq_app) {
       Object (
@@ -110,6 +111,8 @@ namespace Peeq {
       footer.remove_server.connect (on_remove_connection);
 
       welcome.new_connection.connect (on_new_connection);
+
+      headerbar.preferences_clicked.connect (action_preferences);
 
       Unix.signal_add (Posix.Signal.INT, quit_source_func, Priority.HIGH);
       Unix.signal_add (Posix.Signal.TERM, quit_source_func, Priority.HIGH);
@@ -300,6 +303,19 @@ namespace Peeq {
     protected override bool delete_event (Gdk.EventAny event) {
       save_settings ();
       return false;
+    }
+
+    private void action_preferences () {
+      if (preferences_dialog == null) {
+          preferences_dialog = new Dialogs.Preferences (this);
+          preferences_dialog.show_all ();
+
+          preferences_dialog.destroy.connect (() => {
+              preferences_dialog = null;
+          });
+      }
+
+      preferences_dialog.present ();
     }
   }
 }
