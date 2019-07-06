@@ -23,7 +23,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
   public class ResultView : Gtk.Box {
     public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
-    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows, bool is_json);
 
     Gtk.Notebook notebook;
     RowsView rows_view;
@@ -54,8 +54,8 @@ namespace Peeq.Widgets {
         on_row_selected (fields, row);
       });
 
-      rows_view.on_copy.connect((fields, rows) => {
-        on_copy (fields, rows);
+      rows_view.on_copy.connect((fields, rows, is_json) => {
+        on_copy (fields, rows, is_json);
       });
 
       if (result.has_error) {

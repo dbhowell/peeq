@@ -46,8 +46,6 @@ namespace Peeq.Services {
         this.format = format;
         this.number = number;
         this.ftype = ftype;
-
-        print(@"$(to_string ())\n");
       }
 
       public string to_string () {

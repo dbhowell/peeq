@@ -24,7 +24,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
   public class RowsView : Gtk.Box {
     public signal void on_row_selected (ArrayList<QueryResult.Field> fields, QueryResult.Row row);
-    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows);
+    public signal void on_copy (ArrayList<QueryResult.Field> fields, ArrayList<QueryResult.Row> rows, bool is_json);
 
     public string default_font { get; set; }
 
@@ -75,18 +75,17 @@ namespace Peeq.Widgets {
     }
 
     protected virtual bool on_view_key_press_event (Gdk.EventKey event) {
-      if (event.state == Gdk.ModifierType.CONTROL_MASK && event.keyval == 99 && selected_row_index > -1) {
+      if (event.state == Gdk.ModifierType.CONTROL_MASK && (event.keyval == 99 || event.keyval == 106) && selected_row_index > -1) {
         TreeModel model;
         GLib.List<TreePath> paths = view.get_selection ().get_selected_rows (out model);
         ArrayList<QueryResult.Row> rows = new ArrayList<QueryResult.Row> ();
 
         foreach (var p in paths) {
-          print(p.to_string ());
           var index = int.parse(p.to_string ());
           rows.add (this.result.rows[index]);
         }
 
-        on_copy (this.result.fields, rows);
+        on_copy (this.result.fields, rows, (event.keyval == 106));
       }
 
       return true;
