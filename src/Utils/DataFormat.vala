@@ -7,6 +7,23 @@ namespace Peeq.Utils {
     public const string QUOTE = "'";
     public const string NEW_LINE = "\n";
 
+    public const uint PG_TYPE_BOOL = 16;
+    public const uint PG_TYPE_TIMESTAMP = 1184;
+    
+    public static string formatValue (QueryResult.Field field, string value) {
+      var format = (uint)field.ftype;
+
+      if (format == PG_TYPE_BOOL) {
+        return value == "t" ? "true" : "false";
+      }
+
+      if (format == PG_TYPE_TIMESTAMP && value == "") {
+        return "null";
+      }
+
+      return @"\"$(value)\"";
+    }
+
     public static string formatRow (Gee.ArrayList<QueryResult.Field> fields, QueryResult.Row row) {
       var builder = new StringBuilder ();
 
@@ -25,7 +42,7 @@ namespace Peeq.Utils {
       return builder.str;
     }
 
-    public static string formatRows (Gee.ArrayList<QueryResult.Field> fields, Gee.ArrayList<QueryResult.Row> rows) {
+    public static string fromRows (Gee.ArrayList<QueryResult.Field> fields, Gee.ArrayList<QueryResult.Row> rows) {
       var builder = new StringBuilder ();
 
       for (var i=0; i < rows.size; i++) {
