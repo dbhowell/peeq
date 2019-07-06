@@ -19,8 +19,11 @@
 
 namespace Peeq.Widgets { 
   public class MainHeaderBar : Gtk.HeaderBar {
+    public signal void preferences_clicked ();
+
     Gtk.Spinner spinner;
-    
+    Gtk.Button preferences;
+
     public Gtk.AccelGroup accel_group;
 
     public bool working {
@@ -44,6 +47,14 @@ namespace Peeq.Widgets {
 
       spinner = new Gtk.Spinner ();
 
+      preferences = new Gtk.Button ();
+      preferences.image = new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
+      preferences.tooltip_text = ("Menu");
+      preferences.clicked.connect (() => {
+        preferences_clicked ();
+      });
+
+      pack_end (preferences);
       pack_end (spinner);
     }
   }

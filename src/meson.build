@@ -17,6 +17,7 @@ executable(
   'MainWindow.vala',
   'QueryWindow.vala',
   'Dialogs/EditServer.vala',
+  'Dialogs/PreferencesDialog.vala',
   'Widgets/MainHeaderBar.vala',
   'Widgets/ServerList.vala',
   'Widgets/ServerListItem.vala',

@@ -38,20 +38,25 @@
       <summary></summary>
       <description></description>
 		</key>
+    <key name="use-system-font" type="b">
+      <default>true</default>
+      <summary>Use system font</summary>
+      <description>Whether Peeq should use the default system font</description>
+    </key>
     <key name="style-scheme" type="s">
       <default>'solarized-light'</default>
       <summary>Preferred Style Scheme</summary>
       <description>Set the preferred style scheme.</description>
     </key>
-    <key name="mono-space-font" type="s">
-      <default>'Roboto Mono'</default>
-      <summary>Preferred mono spaced font</summary>
-      <description>Set the preferred mono spaced font for SQL queries and results.</description>
+    <key name="font" type="s">
+      <default>'Roboto Mono 10'</default>
+      <summary>Preferred font</summary>
+      <description>Set the preferred font for SQL queries and results.</description>
     </key>
-    <key name="mono-space-font-size" type="s">
+    <key name="font-size" type="s">
       <default>'12pt'</default>
-      <summary>Preferred mono spaced font size</summary>
-      <description>Set the preferred mono spaced font size for SQL queries and results.</description>
+      <summary>Preferred font size</summary>
+      <description>Set the preferred font size for SQL queries and results.</description>
     </key>
 	</schema>
 </schemalist>
