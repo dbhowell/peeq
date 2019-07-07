@@ -23,7 +23,6 @@ namespace Peeq {
 
     private Widgets.MainHeaderBar headerbar;
     private Widgets.Welcome welcome;
-    private Services.Settings settings;
     private Widgets.ServerList server_list;
     private Gtk.Stack content;
     private Gtk.ScrolledWindow scrolled_window;
@@ -41,12 +40,14 @@ namespace Peeq {
     }
 
     construct {
-      settings = new Services.Settings ();
       query_windows = new Gee.ArrayList<QueryWindow> ();
       init_layout ();
     }
 
     private void init_layout () {
+      var gtk_settings = Gtk.Settings.get_default ();
+      gtk_settings.gtk_application_prefer_dark_theme = Peeq.settings.prefer_dark_style;
+
       headerbar = new Widgets.MainHeaderBar ();
       set_titlebar (headerbar);
 
@@ -243,7 +244,7 @@ namespace Peeq {
     }
 
     private void restore_settings () {
-      foreach (var s in settings.servers) {
+      foreach (var s in Peeq.settings.servers) {
         Utils.ConnectionString cs = Utils.ConnectionString.parse (s);
 
         if (cs.get("server_name") != null) {
@@ -251,10 +252,10 @@ namespace Peeq {
         }
       }
 
-      default_width = settings.window_width;
-      default_height = settings.window_height;
+      default_width = Peeq.settings.window_width;
+      default_height = Peeq.settings.window_height;
 
-      switch (settings.window_state) {
+      switch (Peeq.settings.window_state) {
         case PeeqWindowState.MAXIMIZED:
           maximize ();
           break;
@@ -262,7 +263,7 @@ namespace Peeq {
           fullscreen ();
           break;
         default:
-          move (settings.window_x, settings.window_y);
+          move (Peeq.settings.window_x, Peeq.settings.window_y);
           break;
       }
     }
@@ -276,27 +277,27 @@ namespace Peeq {
         servers += @"$(server_item.page.server.connection_string)";
       }
 
-      settings.servers = servers;
+      Peeq.settings.servers = servers;
 
       var state = get_window ().get_state ();
       if (Gdk.WindowState.MAXIMIZED in state) {
-          settings.window_state = PeeqWindowState.MAXIMIZED;
+          Peeq.settings.window_state = PeeqWindowState.MAXIMIZED;
       } else if (Gdk.WindowState.FULLSCREEN in state) {
-          settings.window_state = PeeqWindowState.FULLSCREEN;
+          Peeq.settings.window_state = PeeqWindowState.FULLSCREEN;
       } else {
-          settings.window_state = PeeqWindowState.NORMAL;
+          Peeq.settings.window_state = PeeqWindowState.NORMAL;
           // Save window size
           int width, height;
           get_size (out width, out height);
 
-          settings.window_width = width;
-          settings.window_height = height;
+          Peeq.settings.window_width = width;
+          Peeq.settings.window_height = height;
       }
 
       int x, y;
       get_position (out x, out y);
-      settings.window_x = x;
-      settings.window_y = y;
+      Peeq.settings.window_x = x;
+      Peeq.settings.window_y = y;
 
     }
 

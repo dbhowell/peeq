@@ -66,8 +66,6 @@ namespace Peeq.Dialogs {
           style_combo.append ("tango", _("Tango"));
           Peeq.settings.schema.bind ("style-scheme", style_combo, "active-id", SettingsBindFlags.DEFAULT);
 
-          var font_header = new Granite.HeaderLabel (_("Font"));
-
           var use_custom_font_label = new SettingsLabel (_("Custom font:"));
           use_custom_font = new Gtk.Switch ();
           use_custom_font.halign = Gtk.Align.START;
@@ -78,10 +76,24 @@ namespace Peeq.Dialogs {
           Peeq.settings.schema.bind ("font", select_font, "font-name", SettingsBindFlags.DEFAULT);
           Peeq.settings.schema.bind ("use-system-font", select_font, "sensitive", SettingsBindFlags.INVERT_BOOLEAN);
 
-          content.attach (editor_header, 0, 0, 3, 1);
+
+          var general_header = new Granite.HeaderLabel (_("General"));
+          var dark_mode_label = new SettingsLabel (_("Dark mode:"));
+          var dark_mode_switch = new Granite.ModeSwitch.from_icon_name (
+            "display-brightness-symbolic", "weather-clear-night-symbolic"
+          );
+          dark_mode_switch.notify["active"].connect (() => {
+            var gtk_settings = Gtk.Settings.get_default ();
+            gtk_settings.gtk_application_prefer_dark_theme = dark_mode_switch.active;      
+          });
+          Peeq.settings.schema.bind ("prefer-dark-style", dark_mode_switch, "active", GLib.SettingsBindFlags.DEFAULT);
+
+          content.attach (general_header, 0, 1, 3, 1);
+          content.attach (dark_mode_label, 0, 2, 1, 1);
+          content.attach (dark_mode_switch, 1, 2, 3, 1);
+          content.attach (editor_header, 0, 3, 3, 1);
           content.attach (style_label, 0, 4, 1, 1);
           content.attach (style_combo, 1, 4, 2, 1);
-          content.attach (font_header, 0, 7, 3, 1);
           content.attach (use_custom_font_label , 0, 9, 1, 1);
           content.attach (use_custom_font, 1, 9, 1, 1);
           content.attach (select_font, 2, 9, 1, 1);

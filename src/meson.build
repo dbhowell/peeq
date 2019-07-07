@@ -54,6 +54,7 @@ executable(
     dependency('gee-0.8'),
     dependency('libpq'),
     dependency('granite'),
+    dependency('json-glib-1.0'),
     meson.get_compiler('vala').find_library('posix')
   ],
   install: true

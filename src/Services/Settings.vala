@@ -36,6 +36,7 @@ namespace Peeq {
 		public string font { get; set; }
 		public string font_size { get; set; }
 		public bool use_system_font { get; set; }
+		public bool prefer_dark_style { get; set; }
 
 		public Settings ()  {
       base (Constants.PROJECT_NAME + ".settings");
