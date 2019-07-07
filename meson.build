@@ -1,5 +1,5 @@
 # project name and programming language
-project('com.github.dbhowell.peeq', 'vala', 'c', version: '0.3.2')
+project('com.github.dbhowell.peeq', 'vala', 'c', version: '0.3.3')
 
 # Include the translations module
 i18n = import('i18n')

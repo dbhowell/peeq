@@ -9,6 +9,7 @@ Build-Depends: meson,
                libpq-dev,
                libgranite-dev (>= 0.5),
                libglib2.0-dev,
+               libjson-glib-dev,
                valac
 Standards-Version: 3.9.3
 
