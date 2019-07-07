@@ -5,16 +5,35 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Peeq</name>
-  <summary>Postgresql Client</summary>
+  <summary>Postgresql Client with programmer utilities</summary>
   <description>
-    <p>A Postgresql client for HiDPI screens.</p>
+    <p>A Postgresql client for HiDPI screens, aimed at programmers.</p>
+    <p>
     <ul>
       <li>Connect to multiple Postgresql servers</li>
       <li>One query window per database connection</li>
       <li>Load SQL files</li>
+      <li>Copy/paste as CSV</li>
+      <li>Copy/paste as JSON</li>
+      <li>Override default font and size</li>
+      <li>Dark mode</li>
+      <li>Editor style schemes (e.g. solarized dark, solarized light)</li>
     </ul>
   </description>
   <releases>
+    <release version="0.3.2" date="2019-07-07" urgency="medium">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>CSV copy (CTRL-C)</li>
+          <li>JSON copy (CTRL-J)</li>
+          <li>Multi-row select</li>
+          <li>Dark mode</li>
+          <li>SQL Editor style schemes (e.g. solarized dark)</li>
+          <li>Override default font and size</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.4" date="2018-10-13" urgency="medium">
       <description>
         <p>Initial Release</p>
@@ -71,6 +90,9 @@
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/dbhowell/peeq/master/data/screenshot_003.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dbhowell/peeq/master/data/screenshot_004.png</image>
     </screenshot>
   </screenshots>
   <developer_name>David Howell</developer_name>
