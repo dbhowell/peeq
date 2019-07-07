@@ -66,8 +66,6 @@ namespace Peeq.Dialogs {
           style_combo.append ("tango", _("Tango"));
           Peeq.settings.schema.bind ("style-scheme", style_combo, "active-id", SettingsBindFlags.DEFAULT);
 
-          var font_header = new Granite.HeaderLabel (_("Font"));
-
           var use_custom_font_label = new SettingsLabel (_("Custom font:"));
           use_custom_font = new Gtk.Switch ();
           use_custom_font.halign = Gtk.Align.START;

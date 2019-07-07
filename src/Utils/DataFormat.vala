@@ -7,6 +7,7 @@ namespace Peeq.Utils {
     public const string QUOTE = "'";
     public const string NEW_LINE = "\n";
 
+    public const uint PG_TYPE_JSON = 114;
     public const uint PG_TYPE_BOOL = 16;
     public const uint PG_TYPE_TIMESTAMP = 1184;
     
@@ -19,6 +20,20 @@ namespace Peeq.Utils {
 
       if (format == PG_TYPE_TIMESTAMP && value == "") {
         return "null";
+      }
+
+      if (format == PG_TYPE_BOOL && value == "") {
+        return "null";
+      }
+
+      if (format == PG_TYPE_JSON) {
+        Json.Node? json_value = Json.from_string (value);
+        
+        if (json_value == null) {
+          return "null";
+        }
+
+        return Json.to_string(json_value, true);
       }
 
       return @"\"$(value)\"";
