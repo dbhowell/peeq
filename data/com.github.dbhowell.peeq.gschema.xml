@@ -58,5 +58,10 @@
       <summary>Preferred font size</summary>
       <description>Set the preferred font size for SQL queries and results.</description>
     </key>
+    <key name="prefer-dark-style" type="b">
+      <default>false</default>
+      <summary>Request dark Gtk stylesheet variant</summary>
+      <description>Switches between dark and light style</description>
+    </key>
 	</schema>
 </schemalist>
