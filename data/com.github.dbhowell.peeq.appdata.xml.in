@@ -8,7 +8,6 @@
   <summary>Postgresql Client with programmer utilities</summary>
   <description>
     <p>A Postgresql client for HiDPI screens, aimed at programmers.</p>
-    <p>
     <ul>
       <li>Connect to multiple Postgresql servers</li>
       <li>One query window per database connection</li>
