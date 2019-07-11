@@ -20,6 +20,7 @@
 namespace Peeq.Widgets { 
   public class QueryHeaderBar : Gtk.HeaderBar {
     public signal void execute_query ();
+    public signal void cancel_query ();
     public signal void open_file ();
 
     Gtk.Spinner spinner;
@@ -89,14 +90,14 @@ namespace Peeq.Widgets {
       cancel_button.tooltip_text = ("Cancel");
       cancel_button.set_sensitive (false);
       cancel_button.clicked.connect (() => {
-        execute_query();
+        cancel_query();
       });
 
       pack_start (open_button);
       pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
       pack_start (execute_button);
-//      pack_start (cancel_button);
-//      pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+      pack_start (cancel_button);
+      pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
 //      pack_start (save_button);
 //      pack_start (save_as_button);
 

@@ -66,6 +66,10 @@ namespace Peeq.Services {
     Database database;
     int index = 0;
 
+    public void cancel () {
+      database.request_cancel ();
+    }
+
     void start_working () {
       timer = new Timer ();
       this.working = true;
@@ -80,6 +84,10 @@ namespace Peeq.Services {
 
     public Connection.with_conninfo (string conninfo) {
       this.conninfo = conninfo;
+    }
+
+    public Connection duplicate () {
+      return new Connection.with_conninfo (this.conninfo);
     }
 
     public void connect_start () {

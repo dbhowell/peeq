@@ -31,7 +31,7 @@ namespace Peeq.Utils {
 
       try {
         var data = @"* {font-family: \"$(get_font_family ())\"; font-size: $(get_font_size ())pt; }";
-        print(@"$(data)\n");
+
         style.load_from_data (data, -1);
 
       } catch (GLib.Error e) {

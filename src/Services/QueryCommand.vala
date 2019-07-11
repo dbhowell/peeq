@@ -22,9 +22,11 @@ namespace Peeq.Services {
     public signal void complete (QueryResult result);
     public signal void error (string message);
     public signal void busy (bool working);
+
+    public Connection connection;
  
+    string sql;
     string id;
-    Connection connection;
 
     public QueryCommand.with_connection (Connection connection) {
       this.connection = connection;
@@ -34,10 +36,21 @@ namespace Peeq.Services {
       this.connection.busy.connect (on_busy);
     }
 
+    public QueryCommand.with_conninfo (string conninfo) {
+      this.connection = new Connection.with_conninfo (conninfo);
+
+      this.connection.query_complete.connect (on_complete);
+      this.connection.query_error.connect (on_error);
+      this.connection.busy.connect (on_busy);
+
+      this.connection.connect_start ();
+    }
+
     ~QueryCommand () {
       this.connection.query_complete.disconnect (on_complete);
       this.connection.query_error.disconnect (on_error);
       this.connection.busy.disconnect (on_busy);
+      this.connection.cancel ();
     }
 
     void on_busy (bool working) {
@@ -45,9 +58,7 @@ namespace Peeq.Services {
     }
 
     void on_error (string? id, string message) {
-      if (this.id == id) {
-        error (message);
-      }
+      error (message);
     }
 
     void on_complete (string? id, QueryResult result) {
@@ -57,7 +68,13 @@ namespace Peeq.Services {
     }
 
     public void execute (string sql) {
+      this.sql = sql;
+
       id = connection.execute (sql);
+    }
+
+    public void cancel () {
+      connection.cancel ();
     }
   }
 }

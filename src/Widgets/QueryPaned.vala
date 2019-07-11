@@ -25,16 +25,17 @@ namespace Peeq.Widgets {
   public class QueryPaned : Gtk.Box {
     public signal void is_working (bool working);
 
+    public QueryCommand query_command;
+    
     Granite.Widgets.CollapsiblePaned paned;
     SQLSourceView sql_source_view;
     ResultView result_view;
-    QueryCommand query_command;
     ClipboardManager clipboard_manager;
     ActionBar action_bar;
     Label status_label;
 
-    public QueryPaned.with_query_command (QueryCommand query_command) {
-      this.query_command = query_command;
+    public QueryPaned.with_conninfo (string conninfo) {
+      this.query_command = new QueryCommand.with_conninfo (conninfo);
       
       this.query_command.error.connect ((message) => {
         //print(@"$(message)\n");
@@ -87,6 +88,10 @@ namespace Peeq.Widgets {
     public void execute_query () {
       status_label.label = @"Running...";
       query_command.execute (sql_source_view.get_sql ());
+    }
+
+    public void cancel_query () {
+      query_command.cancel ();
     }
 
     public void set_text (string text) {
