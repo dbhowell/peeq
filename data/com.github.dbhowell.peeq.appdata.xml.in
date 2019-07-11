@@ -20,6 +20,19 @@
     </ul>
   </description>
   <releases>
+    <release version="0.4.0" date="2019-07-11" urgency="medium">
+      <description>
+        <p>New features</p>
+        <ul>
+          <li>Enabled stop/cancel query</li>
+          <li>One connection per query pane</li>
+        </ul>
+        <p>Fixes</p>
+        <ul>
+          <li>Correctly close connections</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.2" date="2019-07-07" urgency="medium">
       <description>
         <p>New features</p>
