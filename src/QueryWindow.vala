@@ -33,6 +33,11 @@ namespace Peeq {
       );
     }
 
+    ~QueryWindow () {
+      print("Destroy()");
+      connection.cancel ();
+    }
+
     public QueryWindow.with_conninfo (Peeq.Application application, string conninfo) {
       this.application = application;
       this.conninfo = conninfo;

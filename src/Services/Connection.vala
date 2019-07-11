@@ -66,6 +66,11 @@ namespace Peeq.Services {
     Database database;
     int index = 0;
 
+    public void cancel () {
+      int result = database.request_cancel ();
+      GLib.print(@"result = $(result)");
+    }
+
     void start_working () {
       timer = new Timer ();
       this.working = true;
