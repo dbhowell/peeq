@@ -34,7 +34,6 @@ namespace Peeq {
     }
 
     ~QueryWindow () {
-      print("Destroy()");
       connection.cancel ();
     }
 
@@ -42,40 +41,57 @@ namespace Peeq {
       this.application = application;
       this.conninfo = conninfo;
 
+      connection = new Services.Connection ();
       connection.conninfo = conninfo;
+      
+      init_layout ();
+
       connection.connect_start ();
     }
 
     construct {
-      init_layout ();
+      
     }
 
     void init_layout () {
-      connection = new Services.Connection ();
-      connection.busy.connect ((working) => {
-        headerbar.working = working;
-      });
+      connection.busy.connect (on_busy);
       connection.ready.connect (() => {
         this.set_title (@"$(connection.host)/$(connection.name)");
       });
       
+      headerbar = new Widgets.QueryHeaderBar ();
+      add_accel_group (headerbar.accel_group);
+      headerbar.execute_query.connect (on_execute_query);
+      headerbar.cancel_query.connect (on_cancel_query);
+      headerbar.open_file.connect (on_open_file);
+
+      set_titlebar (headerbar);
+
       notebook = new DynamicNotebook ();
       notebook.new_tab_requested.connect (on_new_tab_requested);
       notebook.tab_removed.connect (on_tab_removed);
+      notebook.tab_switched.connect (on_tab_switched);
       notebook.insert_tab (create_tab (null), 0);
       notebook.show ();
 
       add (notebook);
 
-      headerbar = new Widgets.QueryHeaderBar ();
-      add_accel_group (headerbar.accel_group);
-      headerbar.execute_query.connect (on_execute_query);
-      headerbar.open_file.connect (on_open_file);
-
-      set_titlebar (headerbar);
-
       resize (800, 600);
     }     
+
+    void on_busy (bool working) {
+      headerbar.working = working || active_pane_working ();
+    }
+
+    bool active_pane_working () {
+      var pane = get_active_pane ();
+    
+      if (pane != null) {
+        return pane.query_command.connection.working;
+      }
+
+      return false;
+    }
 
     void on_new_tab_requested () {
       var tab = create_tab (null);
@@ -90,8 +106,27 @@ namespace Peeq {
       }
     }
 
+    Widgets.QueryPaned get_pane (Tab tab) {
+      return tab.page as Widgets.QueryPaned;
+    }
+
+    void on_tab_switched (Tab? old_tab, Tab new_tab) {
+      Widgets.QueryPaned pane = new_tab.page as Widgets.QueryPaned;
+
+      if (old_tab != null) {
+        get_pane (old_tab).query_command.connection.busy.disconnect (on_busy);
+      }
+
+      get_pane (new_tab).query_command.connection.busy.connect (on_busy);
+      headerbar.working = pane.query_command.connection.working;
+    }
+
+    Widgets.QueryPaned get_active_pane () {
+      return notebook.current.page as Widgets.QueryPaned;
+    }
+
     Tab create_tab (string? content) {
-      var query_pane = new Widgets.QueryPaned.with_query_command (new Services.QueryCommand.with_connection (connection));
+      var query_pane = new Widgets.QueryPaned.with_conninfo (this.conninfo);
       if (content != null) {
         query_pane.set_text (content);
       }
@@ -105,8 +140,11 @@ namespace Peeq {
     }
 
     void on_execute_query () {
-      Widgets.QueryPaned item = (Widgets.QueryPaned) notebook.current.page;
-      item.execute_query ();
+      get_active_pane ().execute_query ();
+    }
+
+    void on_cancel_query () {
+      get_active_pane ().cancel_query ();
     }
 
     void on_open_file () {

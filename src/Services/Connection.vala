@@ -67,8 +67,7 @@ namespace Peeq.Services {
     int index = 0;
 
     public void cancel () {
-      int result = database.request_cancel ();
-      GLib.print(@"result = $(result)");
+      database.request_cancel ();
     }
 
     void start_working () {
@@ -85,6 +84,10 @@ namespace Peeq.Services {
 
     public Connection.with_conninfo (string conninfo) {
       this.conninfo = conninfo;
+    }
+
+    public Connection duplicate () {
+      return new Connection.with_conninfo (this.conninfo);
     }
 
     public void connect_start () {
