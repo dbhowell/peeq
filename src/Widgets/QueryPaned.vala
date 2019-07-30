@@ -42,7 +42,7 @@ namespace Peeq.Widgets {
       });
 
       this.query_command.complete.connect ((result) => {
-        status_label.label = @"$(result.rows.size) Records found.";
+        status_label.label = _(@"$(result.rows.size) Records found.");
         set_result (result);
       });
 
@@ -86,7 +86,7 @@ namespace Peeq.Widgets {
     }
 
     public void execute_query () {
-      status_label.label = @"Running...";
+      status_label.label = _(@"Running...");
       query_command.execute (sql_source_view.get_sql ());
     }
 

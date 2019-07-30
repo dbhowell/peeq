@@ -49,7 +49,7 @@ namespace Peeq.Widgets {
 
       preferences = new Gtk.Button ();
       preferences.image = new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
-      preferences.tooltip_text = ("Menu");
+      preferences.tooltip_text = _("Menu");
       preferences.clicked.connect (() => {
         preferences_clicked ();
       });

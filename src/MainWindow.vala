@@ -189,13 +189,13 @@ namespace Peeq {
 
     private void on_remove_connection () {
       var dialog = new Granite.MessageDialog.with_image_from_icon_name (
-        "Remove Connection",
-        "Are you sure you want to remove this connection?",
+        _("Remove Connection"),
+        _("Are you sure you want to remove this connection?"),
         "list-remove",
         Gtk.ButtonsType.CLOSE);
 
       dialog.transient_for = (Gtk.Window) this.get_toplevel ();
-      dialog.add_button ("_Remove", Gtk.ResponseType.APPLY);
+      dialog.add_button (_("_Remove"), Gtk.ResponseType.APPLY);
 
       dialog.response.connect ((source, response_id) => {
         switch (response_id) {

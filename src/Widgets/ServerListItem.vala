@@ -22,7 +22,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
 	public class ServerListItem : Gtk.ListBoxRow {
 		public string title { get; set; default = ""; }
-		public string subtitle { get; set; default = "<span font_size='small'>Disconnected</span>"; }
+		public string subtitle { get; set; default = "<span font_size='small'>" + _("Disconnected") + "</span>"; }
 		public string icon_name { get; set; default = "network-server"; }
 		public ServerPage page { get; set; }
 
@@ -44,7 +44,7 @@ namespace Peeq.Widgets {
 
 			this.page.server.notify["connected"].connect ((s, p) => {
 				status_image.icon_name = (this.page.server.connected) ? "user-available" : "user-offline";
-				this.subtitle = (this.page.server.connected) ? "<span font_size='small'>Connected</span>" : "<span font_size='small'>Disconnected</span>";
+				this.subtitle = (this.page.server.connected) ? "<span font_size='small'>" + _("Connected") + "</span>" : "<span font_size='small'>" + _("Disconnected") + "</span>";
 			});
 		}
 

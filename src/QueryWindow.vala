@@ -149,10 +149,10 @@ namespace Peeq {
 
     void on_open_file () {
       Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
-        "Open SQL file", this, Gtk.FileChooserAction.OPEN,
-        "_Cancel",
+        _("Open SQL file"), this, Gtk.FileChooserAction.OPEN,
+        _("_Cancel"),
         Gtk.ResponseType.CANCEL,
-        "_Open",
+        _("_Open"),
         Gtk.ResponseType.ACCEPT);
 
       chooser.select_multiple = false;

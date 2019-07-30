@@ -140,7 +140,7 @@ namespace Peeq.Widgets {
       main_frame.vexpand = true;
       main_frame.add (list_root);
       
-      stack.add_titled (main_frame, "Databases", "Databases");
+      stack.add_titled (main_frame, "Databases", _("Databases"));
     }
 
 		private void on_server_busy (bool working) {

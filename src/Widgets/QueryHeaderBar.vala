@@ -60,26 +60,26 @@ namespace Peeq.Widgets {
 
       app_menu = new Gtk.MenuButton ();
       app_menu.image = new Gtk.Image.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
-      app_menu.tooltip_text = ("Menu");
+      app_menu.tooltip_text = _("Menu");
 
       open_button = new Gtk.Button ();
       open_button.image = new Gtk.Image.from_icon_name ("document-open", Gtk.IconSize.LARGE_TOOLBAR);
-      open_button.tooltip_text = ("Open");
+      open_button.tooltip_text = _("Open");
       open_button.clicked.connect (() => {
         open_file ();
       });
 
       save_button = new Gtk.Button ();
       save_button.image = new Gtk.Image.from_icon_name ("document-save", Gtk.IconSize.LARGE_TOOLBAR);
-      save_button.tooltip_text = ("Save");
+      save_button.tooltip_text = _("Save");
 
       save_as_button = new Gtk.Button ();
       save_as_button.image = new Gtk.Image.from_icon_name ("document-save-as", Gtk.IconSize.LARGE_TOOLBAR);
-      save_as_button.tooltip_text = ("Save As...");
+      save_as_button.tooltip_text = _("Save As...");
 
       execute_button = new Gtk.Button ();
       execute_button.image = new Gtk.Image.from_icon_name ("media-playback-start", Gtk.IconSize.LARGE_TOOLBAR);
-      execute_button.tooltip_text = ("Execute");
+      execute_button.tooltip_text = _("Execute");
       execute_button.add_accelerator ("activate", accel_group, Gdk.keyval_from_name("F5"), 0, Gtk.AccelFlags.VISIBLE);
       execute_button.clicked.connect (() => {
         execute_query ();
@@ -87,7 +87,7 @@ namespace Peeq.Widgets {
 
       cancel_button = new Gtk.Button ();
       cancel_button.image = new Gtk.Image.from_icon_name ("media-playback-stop", Gtk.IconSize.LARGE_TOOLBAR);
-      cancel_button.tooltip_text = ("Cancel");
+      cancel_button.tooltip_text = _("Cancel");
       cancel_button.set_sensitive (false);
       cancel_button.clicked.connect (() => {
         cancel_query();
