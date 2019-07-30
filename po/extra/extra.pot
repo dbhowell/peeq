@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-30 10:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/com.github.dbhowell.peeq.desktop.in:3
+#: data/com.github.dbhowell.peeq.desktop.in:4
+#: data/com.github.dbhowell.peeq.appdata.xml.in:7
+msgid "Peeq"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.desktop.in:5
+msgid "Postgresql Client"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.desktop.in:8
+msgid "com.github.dbhowell.peeq"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.desktop.in:10
+msgid "Postgresql;Postgres;PSQL;"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:8
+msgid "Postgresql Client with programmer utilities"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:10
+msgid "A Postgresql client for HiDPI screens, aimed at programmers."
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:12
+msgid "Connect to multiple Postgresql servers"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:13
+msgid "One query window per database connection"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:14
+msgid "Load SQL files"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:15
+msgid "Copy/paste as CSV"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:16
+msgid "Copy/paste as JSON"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:17
+#: data/com.github.dbhowell.peeq.appdata.xml.in:45
+msgid "Override default font and size"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:18
+#: data/com.github.dbhowell.peeq.appdata.xml.in:43
+msgid "Dark mode"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:19
+msgid "Editor style schemes (e.g. solarized dark, solarized light)"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:25
+#: data/com.github.dbhowell.peeq.appdata.xml.in:38
+msgid "New features"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:27
+msgid "Enabled stop/cancel query"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:28
+msgid "One connection per query pane"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:30
+msgid "Fixes"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:32
+msgid "Correctly close connections"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:40
+msgid "CSV copy (CTRL-C)"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:41
+msgid "JSON copy (CTRL-J)"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:42
+msgid "Multi-row select"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:44
+msgid "SQL Editor style schemes (e.g. solarized dark)"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:51
+msgid "Initial Release"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:53
+msgid "HiDPI support"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:54
+msgid "Bug fixes and stability improvements"
+msgstr ""
+
+#: data/com.github.dbhowell.peeq.appdata.xml.in:110
+msgid "David Howell"
+msgstr ""

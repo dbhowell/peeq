@@ -32,7 +32,7 @@ namespace Peeq.Widgets {
 		}
 
 		public void add_database_to_list (string database_name) {
-			DatabaseListItem item = new DatabaseListItem (database_name, "Disconnected");
+			DatabaseListItem item = new DatabaseListItem (database_name, _("Disconnected"));
 
 			add (item);
 			show_all ();
@@ -42,7 +42,7 @@ namespace Peeq.Widgets {
 			clear ();
 
 			foreach (var i in items) {
-				add (new DatabaseListItem (i, "Disconnected"));
+				add (new DatabaseListItem (i, _("Disconnected")));
 			}
 		}
 

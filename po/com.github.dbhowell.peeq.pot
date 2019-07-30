@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dbhowell.peeq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 23:57+1030\n"
+"POT-Creation-Date: 2019-07-30 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,94 +17,196 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/MainWindow.vala:37 src/Widgets/Welcome.vala:7
-#: data/com.github.dbhowell.peeq.desktop.in:3
-#: data/com.github.dbhowell.peeq.desktop.in:4
-#: data/com.github.dbhowell.peeq.appdata.xml.in:6
-msgid "Peeq"
-msgstr ""
-
-#: src/Dialogs/EditServer.vala:62
+#: src/Dialogs/EditServer.vala:82 src/Widgets/ServerProperties.vala:79
 msgid "Name"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:63
+#: src/Dialogs/EditServer.vala:83 src/Widgets/ServerProperties.vala:80
 msgid "Host"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:64
+#: src/Dialogs/EditServer.vala:84 src/Widgets/ServerProperties.vala:81
 msgid "Port"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:65
+#: src/Dialogs/EditServer.vala:85 src/Widgets/ServerProperties.vala:82
 msgid "Username"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:66
+#: src/Dialogs/EditServer.vala:86 src/Widgets/ServerProperties.vala:83
 msgid "Password"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:67
+#: src/Dialogs/EditServer.vala:87 src/Widgets/ServerProperties.vala:84
 msgid "Maintenance Database"
 msgstr ""
 
-#: src/Dialogs/EditServer.vala:68
+#: src/Dialogs/EditServer.vala:88 src/Widgets/ServerProperties.vala:85
 msgid "Colour"
 msgstr ""
 
-#: src/Widgets/MainHeaderBar.vala:38 src/Widgets/Welcome.vala:15
-msgid "Add..."
+#: src/Dialogs/PreferencesDialog.vala:13
+msgid "Preferences"
 msgstr ""
 
-#: src/Widgets/MainHeaderBar.vala:45
-msgid "Edit..."
+#: src/Dialogs/PreferencesDialog.vala:24 src/Dialogs/PreferencesDialog.vala:80
+msgid "General"
 msgstr ""
 
-#: src/Widgets/MainHeaderBar.vala:52
-msgid "Remove..."
+#: src/Dialogs/PreferencesDialog.vala:31
+msgid "Interface"
 msgstr ""
 
-#: src/Widgets/Welcome.vala:7
-msgid "The Postgresql GUI client."
+#: src/Dialogs/PreferencesDialog.vala:43
+msgid "Close"
 msgstr ""
 
-#: src/Widgets/Welcome.vala:15
-msgid "Add a new Postgresql server."
+#: src/Dialogs/PreferencesDialog.vala:56
+msgid "Editor"
 msgstr ""
 
-#: src/Widgets/ServerPage.vala:50
-msgid "Postgresql server version..."
+#: src/Dialogs/PreferencesDialog.vala:58
+msgid "Style:"
 msgstr ""
 
-#: src/Widgets/ResultView.vala:20
-msgid "Query Results"
+#: src/Dialogs/PreferencesDialog.vala:60
+msgid "Classic"
 msgstr ""
 
-#: src/Widgets/ResultView.vala:21
-msgid "Messages"
+#: src/Dialogs/PreferencesDialog.vala:61
+msgid "Colbalt"
 msgstr ""
 
-#: src/Services/Connection.vala:104
+#: src/Dialogs/PreferencesDialog.vala:62
+msgid "Kate"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:63
+msgid "Oblivion"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:64
+msgid "Solarized Dark"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:65
+msgid "Solarized Light"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:66
+msgid "Tango"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:69
+msgid "Custom font:"
+msgstr ""
+
+#: src/Dialogs/PreferencesDialog.vala:81
+msgid "Dark mode:"
+msgstr ""
+
+#: src/Services/Connection.vala:131
 msgid "Connection is busy."
 msgstr ""
 
-#: src/Services/Connection.vala:149
+#: src/Services/Connection.vala:176
 msgid "Connection timed out."
 msgstr ""
 
-#: data/com.github.dbhowell.peeq.desktop.in:5
-#: data/com.github.dbhowell.peeq.appdata.xml.in:7
-msgid "Postgresql Client"
+#: src/Widgets/DatabaseList.vala:35 src/Widgets/DatabaseList.vala:45
+#: src/Widgets/DatabaseListItem.vala:25 src/Widgets/ServerListItem.vala:25
+#: src/Widgets/ServerListItem.vala:47
+msgid "Disconnected"
 msgstr ""
 
-#: data/com.github.dbhowell.peeq.desktop.in:8
-msgid "com.github.dbhowell.peeq"
+#: src/Widgets/ListFooter.vala:12
+msgid "Add server"
 msgstr ""
 
-#: data/com.github.dbhowell.peeq.desktop.in:10
-msgid "Postgresql;Postgres;PSQL;"
+#: src/Widgets/ListFooter.vala:16
+msgid "Remove server"
 msgstr ""
 
-#: data/com.github.dbhowell.peeq.appdata.xml.in:9
-msgid "A Postgresql client for HiDPI screens."
+#: src/Widgets/MainHeaderBar.vala:52 src/Widgets/QueryHeaderBar.vala:63
+msgid "Menu"
+msgstr ""
+
+#: src/Widgets/QueryHeaderBar.vala:67
+msgid "Open"
+msgstr ""
+
+#: src/Widgets/QueryHeaderBar.vala:74
+msgid "Save"
+msgstr ""
+
+#: src/Widgets/QueryHeaderBar.vala:78
+msgid "Save As..."
+msgstr ""
+
+#: src/Widgets/QueryHeaderBar.vala:82
+msgid "Execute"
+msgstr ""
+
+#: src/Widgets/QueryHeaderBar.vala:90
+msgid "Cancel"
+msgstr ""
+
+#: src/Widgets/ResultView.vala:43
+msgid "Query Results"
+msgstr ""
+
+#: src/Widgets/ResultView.vala:44
+msgid "Messages"
+msgstr ""
+
+#: src/Widgets/ServerListItem.vala:47
+msgid "Connected"
+msgstr ""
+
+#: src/Widgets/ServerPage.vala:125
+msgid "Info"
+msgstr ""
+
+#: src/Widgets/ServerPage.vala:143
+msgid "Databases"
+msgstr ""
+
+#: src/Widgets/Welcome.vala:25 src/MainWindow.vala:38
+msgid "Peeq"
+msgstr ""
+
+#: src/Widgets/Welcome.vala:25
+msgid "The Postgresql GUI client."
+msgstr ""
+
+#: src/Widgets/Welcome.vala:33
+msgid "Add..."
+msgstr ""
+
+#: src/Widgets/Welcome.vala:33
+msgid "Add a new Postgresql server."
+msgstr ""
+
+#: src/MainWindow.vala:192
+msgid "Remove Connection"
+msgstr ""
+
+#: src/MainWindow.vala:193
+msgid "Are you sure you want to remove this connection?"
+msgstr ""
+
+#: src/MainWindow.vala:198
+msgid "_Remove"
+msgstr ""
+
+#: src/QueryWindow.vala:152
+msgid "Open SQL file"
+msgstr ""
+
+#: src/QueryWindow.vala:153
+msgid "_Cancel"
+msgstr ""
+
+#: src/QueryWindow.vala:155
+msgid "_Open"
 msgstr ""

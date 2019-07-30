@@ -22,7 +22,7 @@ using Peeq.Services;
 namespace Peeq.Widgets {
 	public class DatabaseListItem : Gtk.ListBoxRow {
 		public string title { get; set; default = ""; }
-		public string subtitle { get; set; default = "<span font_size='small'>Disconnected</span>"; }
+		public string subtitle { get; set; default = "<span font_size='small'>" + _("Disconnected") + "</span>"; }
 		public string icon_name { get; set; default = "office-database"; }
 
 		private Gtk.Image status_image;
