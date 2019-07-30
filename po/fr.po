@@ -1,212 +1,212 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# French translations for com.github.dbhowell.peeq package.
+# Copyright (C) 2019 THE com.github.dbhowell.peeq'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the com.github.dbhowell.peeq package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# NathanBnm, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dbhowell.peeq\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-30 11:39+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-07-30 11:32+0200\n"
+"Last-Translator: NathanBnm\n"
+"Language-Team: none\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/Dialogs/EditServer.vala:82 src/Widgets/ServerProperties.vala:79
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: src/Dialogs/EditServer.vala:83 src/Widgets/ServerProperties.vala:80
 msgid "Host"
-msgstr ""
+msgstr "Hôte"
 
 #: src/Dialogs/EditServer.vala:84 src/Widgets/ServerProperties.vala:81
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: src/Dialogs/EditServer.vala:85 src/Widgets/ServerProperties.vala:82
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: src/Dialogs/EditServer.vala:86 src/Widgets/ServerProperties.vala:83
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: src/Dialogs/EditServer.vala:87 src/Widgets/ServerProperties.vala:84
 msgid "Maintenance Database"
-msgstr ""
+msgstr "Type de base"
 
 #: src/Dialogs/EditServer.vala:88 src/Widgets/ServerProperties.vala:85
 msgid "Colour"
-msgstr ""
+msgstr "Couleur"
 
 #: src/Dialogs/PreferencesDialog.vala:13
 msgid "Preferences"
-msgstr ""
+msgstr "Préférences"
 
 #: src/Dialogs/PreferencesDialog.vala:24 src/Dialogs/PreferencesDialog.vala:80
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: src/Dialogs/PreferencesDialog.vala:31
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: src/Dialogs/PreferencesDialog.vala:43
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: src/Dialogs/PreferencesDialog.vala:56
 msgid "Editor"
-msgstr ""
+msgstr "Éditeur"
 
 #: src/Dialogs/PreferencesDialog.vala:58
 msgid "Style:"
-msgstr ""
+msgstr "Style :"
 
 #: src/Dialogs/PreferencesDialog.vala:60
 msgid "Classic"
-msgstr ""
+msgstr "Classique"
 
 #: src/Dialogs/PreferencesDialog.vala:61
 msgid "Colbalt"
-msgstr ""
+msgstr "Cobalt"
 
 #: src/Dialogs/PreferencesDialog.vala:62
 msgid "Kate"
-msgstr ""
+msgstr "Kate"
 
 #: src/Dialogs/PreferencesDialog.vala:63
 msgid "Oblivion"
-msgstr ""
+msgstr "Oblivion"
 
 #: src/Dialogs/PreferencesDialog.vala:64
 msgid "Solarized Dark"
-msgstr ""
+msgstr "Solarized Dark"
 
 #: src/Dialogs/PreferencesDialog.vala:65
 msgid "Solarized Light"
-msgstr ""
+msgstr "Solarized Light"
 
 #: src/Dialogs/PreferencesDialog.vala:66
 msgid "Tango"
-msgstr ""
+msgstr "Tango"
 
 #: src/Dialogs/PreferencesDialog.vala:69
 msgid "Custom font:"
-msgstr ""
+msgstr "Police personnalisée :"
 
 #: src/Dialogs/PreferencesDialog.vala:81
 msgid "Dark mode:"
-msgstr ""
+msgstr "Thème sombre :"
 
 #: src/Services/Connection.vala:131
 msgid "Connection is busy."
-msgstr ""
+msgstr "Connexion occupée."
 
 #: src/Services/Connection.vala:176
 msgid "Connection timed out."
-msgstr ""
+msgstr "Délai de connexion dépassé."
 
 #: src/Widgets/DatabaseList.vala:35 src/Widgets/DatabaseList.vala:45
 #: src/Widgets/DatabaseListItem.vala:25 src/Widgets/ServerListItem.vala:25
 #: src/Widgets/ServerListItem.vala:47
 msgid "Disconnected"
-msgstr ""
+msgstr "Déconnecté"
 
 #: src/Widgets/ListFooter.vala:12
 msgid "Add server"
-msgstr ""
+msgstr "Ajouter un serveur"
 
 #: src/Widgets/ListFooter.vala:16
 msgid "Remove server"
-msgstr ""
+msgstr "Supprimer un serveur"
 
 #: src/Widgets/MainHeaderBar.vala:52 src/Widgets/QueryHeaderBar.vala:63
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: src/Widgets/QueryHeaderBar.vala:67
 msgid "Open"
-msgstr ""
+msgstr "Ouvrir"
 
 #: src/Widgets/QueryHeaderBar.vala:74
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: src/Widgets/QueryHeaderBar.vala:78
 msgid "Save As..."
-msgstr ""
+msgstr "Enregistrer sous..."
 
 #: src/Widgets/QueryHeaderBar.vala:82
 msgid "Execute"
-msgstr ""
+msgstr "Exécuter"
 
 #: src/Widgets/QueryHeaderBar.vala:90
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: src/Widgets/ResultView.vala:43
 msgid "Query Results"
-msgstr ""
+msgstr "Résultats de la requête"
 
 #: src/Widgets/ResultView.vala:44
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #: src/Widgets/ServerListItem.vala:47
 msgid "Connected"
-msgstr ""
+msgstr "Connecté"
 
 #: src/Widgets/ServerPage.vala:125
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: src/Widgets/ServerPage.vala:143
 msgid "Databases"
-msgstr ""
+msgstr "Bases de données"
 
 #: src/Widgets/Welcome.vala:25 src/MainWindow.vala:38
 msgid "Peeq"
-msgstr ""
+msgstr "Peeq"
 
 #: src/Widgets/Welcome.vala:25
 msgid "The Postgresql GUI client."
-msgstr ""
+msgstr "Le client pour Postgresql"
 
 #: src/Widgets/Welcome.vala:33
 msgid "Add..."
-msgstr ""
+msgstr "Ajouter..."
 
 #: src/Widgets/Welcome.vala:33
 msgid "Add a new Postgresql server."
-msgstr ""
+msgstr "Ajouter un nouveau serveur Postgresql"
 
 #: src/MainWindow.vala:192
 msgid "Remove Connection"
-msgstr ""
+msgstr "Supprimer la connexion"
 
 #: src/MainWindow.vala:193
 msgid "Are you sure you want to remove this connection?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer cette connexion ?"
 
 #: src/MainWindow.vala:198
 msgid "_Remove"
-msgstr ""
+msgstr "_Supprimer"
 
 #: src/QueryWindow.vala:152
 msgid "Open SQL file"
-msgstr ""
+msgstr "Ouvrir un fichier SQL"
 
 #: src/QueryWindow.vala:153
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annuler"
 
 #: src/QueryWindow.vala:155
 msgid "_Open"
-msgstr ""
+msgstr "_Ouvrir"
