@@ -119,7 +119,7 @@ msgid "Initial Release"
 msgstr "Version initiale"
 
 #: data/com.github.dbhowell.peeq.appdata.xml.in:53
-msgid "HiDPI support", Solarized Light
+msgid "HiDPI support"
 msgstr "Prise en charge des écrans HiDPI"
 
 #: data/com.github.dbhowell.peeq.appdata.xml.in:54
