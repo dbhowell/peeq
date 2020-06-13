@@ -18,6 +18,7 @@
 */
 
 using Peeq.Services;
+using Gtk;
 
 namespace Peeq.Widgets {
 	public class DatabaseList : Gtk.ListBox {

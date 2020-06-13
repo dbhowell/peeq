@@ -22,19 +22,12 @@ using Peeq.Utils;
 using Gtk;
 
 namespace Peeq.Widgets { 
-  public class QueryPaned : Gtk.Box {
-    public signal void is_working (bool working);
-
+  public class DatabaseView : Gtk.Box {
     public QueryCommand query_command;
     
-    Granite.Widgets.CollapsiblePaned paned;
-    SQLSourceView sql_source_view;
-    ResultView result_view;
-    ClipboardManager clipboard_manager;
-    ActionBar action_bar;
-    Label status_label;
+    ListBox database_list;
 
-    public QueryPaned.with_conninfo (string conninfo) {
+    public DatabaseView.with_conninfo (string conninfo) {
       this.query_command = new QueryCommand.with_conninfo (conninfo);
       
       this.query_command.error.connect ((message) => {
@@ -50,35 +43,17 @@ namespace Peeq.Widgets {
     }
 
     void init_layout () {
-      orientation = Orientation.VERTICAL;
-      clipboard_manager = new ClipboardManager ();
-      sql_source_view = new SQLSourceView ();
-      result_view = new ResultView ();
-      result_view.on_copy.connect ((fields, rows, is_json) => {
-        clipboard_manager.set_text (
-          is_json ?  
-            Utils.JsonFormat.fromRows(fields, rows) :
-            Utils.DataFormat.fromRows(fields, rows)
-        );
-      });
+      database_list = new Gtk.ListBox ();
+      database_list.activate_on_single_click = true;
+      database_list.expand = true;
+      database_list.selection_mode = Gtk.SelectionMode.SINGLE;
+      database_list.set_filter_func (filter_function);
+      database_list.set_header_func (header_function);
+      database_list.set_sort_func (sort_function);
 
-      paned = new Granite.Widgets.CollapsiblePaned(
-        Gtk.Orientation.VERTICAL
-      );
-
-      paned.position = 200;
-      paned.pack1(sql_source_view, false, false);
-      paned.pack2(result_view, false, true);
-
-      status_label = new Label ("");
-      status_label.margin = 12;
-      
-      action_bar = new Gtk.ActionBar ();
-      action_bar.get_style_context ().add_class (Gtk.STYLE_CLASS_INLINE_TOOLBAR);
-      action_bar.pack_end (status_label);
-
-      add (paned);
-      add (action_bar);
+      var scrolledwindow = new Gtk.ScrolledWindow (null, null);
+      scrolledwindow.add (database_list);
+      add(scrolledwindow);
     }
 
     void set_result (QueryResult result) {
@@ -87,19 +62,11 @@ namespace Peeq.Widgets {
 
     public void execute_query () {
       status_label.label = _(@"Running...");
-      query_command.execute (sql_source_view.get_sql ());
+      query_command.execute ("");
     }
 
     public void cancel_query () {
       query_command.cancel ();
-    }
-
-    public void set_text (string text) {
-      sql_source_view.set_text (text);
-    }
-
-    public string get_text () {
-      return sql_source_view.get_text ();
     }
   }
 }

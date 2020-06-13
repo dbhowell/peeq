@@ -21,6 +21,7 @@ using Peeq.Services;
 
 namespace Peeq.Widgets {
 	public class ServerListItem : Gtk.ListBoxRow {
+		public string group { get; set; default = "Servers"; }
 		public string title { get; set; default = ""; }
 		public string subtitle { get; set; default = "<span font_size='small'>" + _("Disconnected") + "</span>"; }
 		public string icon_name { get; set; default = "network-server"; }
@@ -28,8 +29,9 @@ namespace Peeq.Widgets {
 
 		private Gtk.Image status_image;
 
-		public ServerListItem (string title, string subtitle, string icon_name = "network-server") {
+		public ServerListItem (string title, string subtitle, string group = "Servers", string icon_name = "network-server") {
 			Object (
+				group: group,
 				title: title,
 				subtitle: subtitle,
 				icon_name: icon_name
@@ -38,6 +40,7 @@ namespace Peeq.Widgets {
 
 		public ServerListItem.with_server (ServerPage page) {
 			Object (
+				group: page.group,
 				title: page.server.server_name,
 				page: page
 			);

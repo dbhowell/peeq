@@ -92,8 +92,10 @@ namespace Peeq {
 
       restore_settings ();
 
-      connect_signals ();
       show_all ();
+      connect_signals ();
+
+      restore_servers ();
     }
 
     private void create_server_item (Utils.ConnectionString connection_string) {
@@ -229,6 +231,7 @@ namespace Peeq {
       if (response_id == Gtk.ResponseType.OK) {
         Dialogs.EditServer dialog = (Dialogs.EditServer) source;
         Utils.ConnectionString cs = new Utils.ConnectionString ();
+        cs.set("group", dialog.group);
         cs.set("server_name", dialog.server_name);
         cs.set("host", dialog.host);
         cs.set("port", dialog.port);
@@ -243,7 +246,7 @@ namespace Peeq {
       source.destroy ();
     }
 
-    private void restore_settings () {
+    private void restore_servers () {
       foreach (var s in Peeq.settings.servers) {
         Utils.ConnectionString cs = Utils.ConnectionString.parse (s);
 
@@ -251,7 +254,9 @@ namespace Peeq {
           create_server_item (cs);
         }
       }
+    }
 
+    private void restore_settings () {
       default_width = Peeq.settings.window_width;
       default_height = Peeq.settings.window_height;
 

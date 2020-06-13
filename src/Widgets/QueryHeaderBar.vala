@@ -22,6 +22,7 @@ namespace Peeq.Widgets {
     public signal void execute_query ();
     public signal void cancel_query ();
     public signal void open_file ();
+    public signal void save_file ();
 
     Gtk.Spinner spinner;
     Gtk.MenuButton app_menu;
@@ -72,6 +73,9 @@ namespace Peeq.Widgets {
       save_button = new Gtk.Button ();
       save_button.image = new Gtk.Image.from_icon_name ("document-save", Gtk.IconSize.LARGE_TOOLBAR);
       save_button.tooltip_text = _("Save");
+      save_button.clicked.connect (() => {
+        save_file ();
+      });
 
       save_as_button = new Gtk.Button ();
       save_as_button.image = new Gtk.Image.from_icon_name ("document-save-as", Gtk.IconSize.LARGE_TOOLBAR);
@@ -94,11 +98,11 @@ namespace Peeq.Widgets {
       });
 
       pack_start (open_button);
+      pack_start (save_button);
       pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
       pack_start (execute_button);
       pack_start (cancel_button);
       pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-//      pack_start (save_button);
 //      pack_start (save_as_button);
 
 //      pack_end (app_menu);

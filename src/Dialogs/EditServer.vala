@@ -26,6 +26,7 @@ namespace Peeq.Dialogs {
 		private Gtk.Label label_pass;
 		private Gtk.Label label_maintenance_db;
 		private Gtk.Label label_colour;
+		private Gtk.Label label_group;
 
 		private Gtk.Entry entry_name;
 		private Gtk.Entry entry_host;
@@ -33,6 +34,7 @@ namespace Peeq.Dialogs {
 		private Gtk.Entry entry_user;
 		private Gtk.Entry entry_pass;
 		private Gtk.Entry entry_maintenance_db;
+		private Gtk.Entry entry_group;
 
 		private Gtk.Button button_save;
 		private Gtk.Button button_cancel;
@@ -40,6 +42,11 @@ namespace Peeq.Dialogs {
 		public string server_name {
 			get { return entry_name.get_text (); }
 			set { entry_name.set_text (value); }
+		}
+
+		public string group {
+			get { return entry_group.get_text (); }
+			set { entry_group.set_text (value); }
 		}
 
 		public string host {
@@ -79,6 +86,7 @@ namespace Peeq.Dialogs {
       grid.column_spacing = 12;
 			grid.row_spacing = 12;
 
+			label_group = new Gtk.Label (_("Group"));
 			label_name = new Gtk.Label (_("Name"));
 			label_host = new Gtk.Label (_("Host"));
 			label_port = new Gtk.Label (_("Port"));
@@ -87,6 +95,7 @@ namespace Peeq.Dialogs {
 			label_maintenance_db = new Gtk.Label (_("Maintenance Database"));
 			label_colour = new Gtk.Label (_("Colour"));
 
+			label_group.halign = Gtk.Align.END;
 			label_name.halign = Gtk.Align.END;
 			label_host.halign = Gtk.Align.END;
 			label_port.halign = Gtk.Align.END;
@@ -94,6 +103,7 @@ namespace Peeq.Dialogs {
 			label_pass.halign = Gtk.Align.END;
 			label_maintenance_db.halign = Gtk.Align.END;
 
+			label_group.xalign = 1;
 			label_name.xalign = 1;
 			label_host.xalign = 1;
 			label_port.xalign = 1;
@@ -101,6 +111,7 @@ namespace Peeq.Dialogs {
 			label_pass.xalign = 1;
 			label_maintenance_db.xalign = 1;
 
+			entry_group = new Gtk.Entry ();
 			entry_name = new Gtk.Entry ();
 			entry_host = new Gtk.Entry ();
 			entry_port = new Gtk.Entry ();
@@ -115,18 +126,26 @@ namespace Peeq.Dialogs {
 			button_save = new Gtk.Button ();
 			button_cancel = new Gtk.Button ();
 
-			grid.attach (label_name, 0, 0, 1, 1);
-			grid.attach (entry_name, 1, 0, 1, 1);
-			grid.attach (label_host, 0, 1, 1, 1);
-			grid.attach (entry_host, 1, 1, 1, 1);
-			grid.attach (label_user, 0, 2, 1, 1);
-			grid.attach (entry_user, 1, 2, 1, 1);
-			grid.attach (label_pass, 0, 3, 1, 1);
-			grid.attach (entry_pass, 1, 3, 1, 1);
-			grid.attach (label_port, 0, 4, 1, 1);
-			grid.attach (entry_port, 1, 4, 1, 1);
-			grid.attach (label_maintenance_db, 0, 5, 1, 1);
-			grid.attach (entry_maintenance_db, 1, 5, 1, 1);
+			grid.attach (label_group, 0, 0, 1, 1);
+			grid.attach (entry_group, 1, 0, 1, 1);
+			
+			grid.attach (label_name, 0, 1, 1, 1);
+			grid.attach (entry_name, 1, 1, 1, 1);
+
+			grid.attach (label_host, 0, 2, 1, 1);
+			grid.attach (entry_host, 1, 2, 1, 1);
+			
+			grid.attach (label_user, 0, 3, 1, 1);
+			grid.attach (entry_user, 1, 3, 1, 1);
+			
+			grid.attach (label_pass, 0, 4, 1, 1);
+			grid.attach (entry_pass, 1, 4, 1, 1);
+			
+			grid.attach (label_port, 0, 5, 1, 1);
+			grid.attach (entry_port, 1, 5, 1, 1);
+			
+			grid.attach (label_maintenance_db, 0, 6, 1, 1);
+			grid.attach (entry_maintenance_db, 1, 6, 1, 1);
 
 			get_content_area ().add (grid);
 
