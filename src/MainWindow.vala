@@ -29,6 +29,7 @@ namespace Peeq {
     private Gee.ArrayList<QueryWindow> query_windows;
     private Widgets.ListFooter footer;
     private Gtk.Dialog? preferences_dialog = null;
+    private Gee.ArrayList<string> groups = new Gee.ArrayList<string> ();
 
     public MainWindow (Peeq.Application peeq_app) {
       Object (
@@ -104,6 +105,7 @@ namespace Peeq {
       page.busy.connect (on_page_busy);
 
       server_list.add_server_to_list (page);
+      add_group (connection_string.get("group"));
     }
 
     private void connect_signals () {
@@ -112,6 +114,7 @@ namespace Peeq {
 
       footer.add_server.connect (on_new_connection);
       footer.remove_server.connect (on_remove_connection);
+      footer.edit_server.connect (on_edit_connection);
 
       welcome.new_connection.connect (on_new_connection);
 
@@ -183,7 +186,14 @@ namespace Peeq {
     }
 
     private void on_new_connection () {
-      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel ());
+      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
+
+      dialog.response.connect (on_edit_server_response);
+      dialog.show_all ();
+    }
+
+    private void on_edit_connection () {
+      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
 
       dialog.response.connect (on_edit_server_response);
       dialog.show_all ();
@@ -322,6 +332,22 @@ namespace Peeq {
       }
 
       preferences_dialog.present ();
+    }
+
+    private string[] get_groups () {
+      string[] items = {};
+
+      for (var i = 0; i < groups.size; i++) {
+        items += groups.get (i);
+      }
+
+      return items;
+    }
+
+    private void add_group (string item) {
+      if (!groups.contains (item)) {
+        groups.add (item);
+      }
     }
   }
 }

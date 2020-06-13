@@ -34,10 +34,12 @@ namespace Peeq.Dialogs {
 		private Gtk.Entry entry_user;
 		private Gtk.Entry entry_pass;
 		private Gtk.Entry entry_maintenance_db;
-		private Gtk.Entry entry_group;
+		private Gtk.ComboBox entry_group;
 
 		private Gtk.Button button_save;
 		private Gtk.Button button_cancel;
+
+		string[] groups;
 
 		public string server_name {
 			get { return entry_name.get_text (); }
@@ -45,8 +47,8 @@ namespace Peeq.Dialogs {
 		}
 
 		public string group {
-			get { return entry_group.get_text (); }
-			set { entry_group.set_text (value); }
+			get { return ((Gtk.Entry)entry_group.get_child ()).get_text (); }
+			set { ((Gtk.Entry)entry_group.get_child ()).set_text (value); }
 		}
 
 		public string host {
@@ -74,9 +76,10 @@ namespace Peeq.Dialogs {
 			set { entry_maintenance_db.set_text (value); }
 		}
 
-		public EditServer (Gtk.Window parent) {
+		public EditServer (Gtk.Window parent, string[]? groups) {
 			Object (transient_for: parent);
 
+			this.groups = groups;
 			init_layout ();
 		}
 
@@ -111,7 +114,22 @@ namespace Peeq.Dialogs {
 			label_pass.xalign = 1;
 			label_maintenance_db.xalign = 1;
 
-			entry_group = new Gtk.Entry ();
+
+			Gtk.ListStore liststore = new Gtk.ListStore (1, typeof (string));
+
+			for (int i = 0; i < groups.length; i++){
+				Gtk.TreeIter iter;
+				liststore.append (out iter);
+				liststore.set (iter, 0, groups[i]);
+			}
+
+			entry_group = new Gtk.ComboBox.with_model_and_entry (liststore);
+
+			Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+			entry_group.pack_start (cell, false);
+			entry_group.set_entry_text_column (0);
+			entry_group.set_active (0);
+			
 			entry_name = new Gtk.Entry ();
 			entry_host = new Gtk.Entry ();
 			entry_port = new Gtk.Entry ();

@@ -239,6 +239,8 @@ namespace Peeq {
         try {
           FileUtils.get_contents (chooser.get_filename (), out sql_text);
           var tab = create_tab (sql_text);
+          tab.label = GLib.Path.get_basename (chooser.get_filename ());
+          
           notebook.insert_tab (tab, -1);
           notebook.current = tab;
 

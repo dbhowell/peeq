@@ -19,7 +19,6 @@
 */
 
 public class Peeq.DatabaseObjectRow : Gtk.ListBoxRow {
-  public string name { get; construct; }
 
   public DatabaseObjectRow (string name) {
       Object (name: name);
