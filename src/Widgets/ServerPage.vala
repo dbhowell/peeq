@@ -24,6 +24,7 @@ namespace Peeq.Widgets {
 		public signal void show_error ();
 
 		public string icon_name { get; set; }
+		public string group { get; set; }
 		public string title { get; set; }
 		public Services.ServerConnection server { get; set; }
 
@@ -45,6 +46,8 @@ namespace Peeq.Widgets {
 			server.error.connect (on_server_error);
 			server.busy.connect (on_server_busy);
 
+      group = connection_string.get("group");
+      
       init_layout ();
 
 			bind_property ("title", server_label, "label", GLib.BindingFlags.SYNC_CREATE);

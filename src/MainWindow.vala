@@ -29,6 +29,7 @@ namespace Peeq {
     private Gee.ArrayList<QueryWindow> query_windows;
     private Widgets.ListFooter footer;
     private Gtk.Dialog? preferences_dialog = null;
+    private Gee.ArrayList<string> groups = new Gee.ArrayList<string> ();
 
     public MainWindow (Peeq.Application peeq_app) {
       Object (
@@ -92,8 +93,10 @@ namespace Peeq {
 
       restore_settings ();
 
-      connect_signals ();
       show_all ();
+      connect_signals ();
+
+      restore_servers ();
     }
 
     private void create_server_item (Utils.ConnectionString connection_string) {
@@ -102,6 +105,7 @@ namespace Peeq {
       page.busy.connect (on_page_busy);
 
       server_list.add_server_to_list (page);
+      add_group (connection_string.get("group"));
     }
 
     private void connect_signals () {
@@ -110,6 +114,7 @@ namespace Peeq {
 
       footer.add_server.connect (on_new_connection);
       footer.remove_server.connect (on_remove_connection);
+      footer.edit_server.connect (on_edit_connection);
 
       welcome.new_connection.connect (on_new_connection);
 
@@ -181,7 +186,14 @@ namespace Peeq {
     }
 
     private void on_new_connection () {
-      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel ());
+      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
+
+      dialog.response.connect (on_edit_server_response);
+      dialog.show_all ();
+    }
+
+    private void on_edit_connection () {
+      var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
 
       dialog.response.connect (on_edit_server_response);
       dialog.show_all ();
@@ -229,6 +241,7 @@ namespace Peeq {
       if (response_id == Gtk.ResponseType.OK) {
         Dialogs.EditServer dialog = (Dialogs.EditServer) source;
         Utils.ConnectionString cs = new Utils.ConnectionString ();
+        cs.set("group", dialog.group);
         cs.set("server_name", dialog.server_name);
         cs.set("host", dialog.host);
         cs.set("port", dialog.port);
@@ -243,7 +256,7 @@ namespace Peeq {
       source.destroy ();
     }
 
-    private void restore_settings () {
+    private void restore_servers () {
       foreach (var s in Peeq.settings.servers) {
         Utils.ConnectionString cs = Utils.ConnectionString.parse (s);
 
@@ -251,7 +264,9 @@ namespace Peeq {
           create_server_item (cs);
         }
       }
+    }
 
+    private void restore_settings () {
       default_width = Peeq.settings.window_width;
       default_height = Peeq.settings.window_height;
 
@@ -317,6 +332,22 @@ namespace Peeq {
       }
 
       preferences_dialog.present ();
+    }
+
+    private string[] get_groups () {
+      string[] items = {};
+
+      for (var i = 0; i < groups.size; i++) {
+        items += groups.get (i);
+      }
+
+      return items;
+    }
+
+    private void add_group (string item) {
+      if (!groups.contains (item)) {
+        groups.add (item);
+      }
     }
   }
 }

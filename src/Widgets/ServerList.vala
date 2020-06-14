@@ -18,6 +18,7 @@
 */
 
 using Peeq.Services;
+using Gtk;
 
 namespace Peeq.Widgets {
 	public class ServerList : Gtk.ListBox {
@@ -30,9 +31,14 @@ namespace Peeq.Widgets {
 			bool show = (get_children ().length () > 0);
 			show_no_items (!show);
 
+			set_header_func (title_rows);
 			set_sort_func ((row1, row2) => {
 				ServerListItem item1 = (ServerListItem)row1;
 				ServerListItem item2 = (ServerListItem)row2;
+
+				if (item1.group != item2.group) {
+					return item1.group > item2.group ? 1 : -1;
+				}
 
 				return item1.title > item2.title ? 1 : -1;
 			});
@@ -43,6 +49,31 @@ namespace Peeq.Widgets {
 
 			add (item);
 			show_all ();
+		}
+
+		private Gtk.Label header_label (string group) {
+			var label = new Gtk.Label (group);
+			label.hexpand = true;
+			label.xalign = 0;
+			label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
+			
+			return label;
+		}
+
+		private void title_rows (ListBoxRow row, ListBoxRow? before) {
+			ServerListItem server = (ServerListItem) row;
+			
+			if (before != null) {
+				ServerListItem server_before = (ServerListItem) before;
+
+				if (server.group != server_before.group) {
+					row.set_header (header_label (server.group));
+				} else {
+					row.set_header (null);
+				}
+			} else {
+				row.set_header (header_label (server.group));
+			}
 		}
 	}
 }

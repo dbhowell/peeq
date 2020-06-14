@@ -1,4 +1,5 @@
 build
+builddir
 src/config.vala
 *~
 meson

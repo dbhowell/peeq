@@ -18,12 +18,27 @@
 */
 
 using Granite.Widgets;
+using Peeq.Widgets;
+using Peeq.Services;
 
 namespace Peeq { 
   public class QueryWindow : Gtk.Window {
     Widgets.QueryHeaderBar headerbar;
     Services.Connection connection;
     DynamicNotebook notebook;
+    
+    Services.QueryCommand tables_command;
+    Services.QueryCommand views_command;
+    Services.QueryCommand functions_command;
+    Services.QueryCommand columns_command;
+
+    Granite.Widgets.SourceList.ExpandableItem functions_category = new Granite.Widgets.SourceList.ExpandableItem ("Functions");
+    Granite.Widgets.SourceList.ExpandableItem sequences_category = new Granite.Widgets.SourceList.ExpandableItem ("Sequences");
+    Granite.Widgets.SourceList.ExpandableItem tables_category = new Granite.Widgets.SourceList.ExpandableItem ("Tables");
+    Granite.Widgets.SourceList.ExpandableItem views_category = new Granite.Widgets.SourceList.ExpandableItem ("Views");
+
+    Widgets.PostgresListItem selected_item;
+
     public string conninfo { get; set; }
 
     public QueryWindow (Peeq.Application application) {
@@ -54,16 +69,33 @@ namespace Peeq {
     }
 
     void init_layout () {
+      functions_command = new Services.QueryCommand.with_connection (connection);
+      tables_command = new Services.QueryCommand.with_connection (connection);
+      views_command = new Services.QueryCommand.with_connection (connection);
+      columns_command = new Services.QueryCommand.with_connection (connection);
+      
       connection.busy.connect (on_busy);
       connection.ready.connect (() => {
         this.set_title (@"$(connection.host)/$(connection.name)");
+
+        tables_command.execute (Services.TABLES_SQL);
       });
+
+      this.tables_command.error.connect ((message) => {
+        print(@"$(message)\n");
+      });
+
+      this.tables_command.complete.connect (this.on_tables_complete);
+      this.views_command.complete.connect (this.on_views_complete);
+      this.functions_command.complete.connect (this.on_functions_complete);
+      this.columns_command.complete.connect (this.on_columns_complete);
       
       headerbar = new Widgets.QueryHeaderBar ();
       add_accel_group (headerbar.accel_group);
       headerbar.execute_query.connect (on_execute_query);
       headerbar.cancel_query.connect (on_cancel_query);
       headerbar.open_file.connect (on_open_file);
+      headerbar.save_file.connect (on_save_file);
 
       set_titlebar (headerbar);
 
@@ -74,7 +106,46 @@ namespace Peeq {
       notebook.insert_tab (create_tab (null), 0);
       notebook.show ();
 
-      add (notebook);
+      var listbox = new Gtk.ListBox ();
+      listbox.activate_on_single_click = true;
+      listbox.expand = true;
+      listbox.selection_mode = Gtk.SelectionMode.SINGLE;
+
+      var scrolledwindow = new Gtk.ScrolledWindow (null, null);
+      scrolledwindow.add (listbox);
+
+      var source_list = new Granite.Widgets.SourceList ();
+      source_list.set_size_request (240, -1);
+      source_list.item_selected.connect ((item) => {
+        selected_item = (Widgets.PostgresListItem) item;
+
+        if (selected_item.postgres_object == PostgresObject.TABLE) {
+          columns_command.execute (@"SELECT column_name, data_type FROM information_schema.columns WHERE table_schema='$(selected_item.schema)' AND table_name='$(selected_item.name)' ORDER BY column_name");
+        }
+
+        if (selected_item.postgres_object == PostgresObject.VIEW) {
+          columns_command.execute (@"SELECT column_name, data_type FROM information_schema.columns WHERE table_schema='$(selected_item.schema)' AND table_name='$(selected_item.name)' ORDER BY column_name");
+        }
+
+        if (selected_item.postgres_object == PostgresObject.FUNCTION) {
+          var tab = create_tab (selected_item.definition);
+          notebook.insert_tab (tab, -1);
+          notebook.current = tab;
+        }
+      });
+      
+      var root = source_list.root;
+
+      root.add (functions_category);
+      root.add (sequences_category);
+      root.add (tables_category);
+      root.add (views_category);
+
+      var paned = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
+      paned.pack1 (source_list, false, true);
+      paned.pack2 (notebook, true, false);
+
+      add (paned);
 
       resize (800, 600);
     }     
@@ -166,17 +237,106 @@ namespace Peeq {
       if (chooser.run () == Gtk.ResponseType.ACCEPT) {
         string sql_text;
         try {
-        FileUtils.get_contents (chooser.get_filename (), out sql_text);
-        var tab = create_tab (sql_text);
-        notebook.insert_tab (tab, -1);
-        notebook.current = tab;
+          FileUtils.get_contents (chooser.get_filename (), out sql_text);
+          var tab = create_tab (sql_text);
+          tab.label = GLib.Path.get_basename (chooser.get_filename ());
+          
+          notebook.insert_tab (tab, -1);
+          notebook.current = tab;
 
-        chooser.close ();
+          chooser.close ();
         } catch (GLib.FileError e) {
           print ("A FileError occurred.");
         }
+      } else {
+        chooser.close ();
       }
 
+    }
+
+    void on_save_file () {
+      Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
+        _("Save SQL file"), this, Gtk.FileChooserAction.SAVE,
+        _("_Cancel"),
+        Gtk.ResponseType.CANCEL,
+        _("_Save"),
+        Gtk.ResponseType.ACCEPT);
+
+      chooser.select_multiple = false;
+
+      Gtk.FileFilter filter = new Gtk.FileFilter ();
+      chooser.set_filter (filter);
+      filter.add_mime_type ("application/sql");
+      filter.add_mime_type ("text/sql");
+      filter.add_mime_type ("text/x-sql");
+      filter.add_mime_type ("text/plain");
+      
+      if (chooser.run () == Gtk.ResponseType.ACCEPT) {
+        try {
+          FileUtils.set_contents (chooser.get_filename (), get_active_pane ().get_text ());
+
+          chooser.close ();
+        } catch (GLib.FileError e) {
+          print ("A FileError occurred.");
+        }
+      } else {
+        chooser.close ();
+      }
+
+    }
+
+    private void on_tables_complete (Services.QueryResult result) {
+      views_command.execute (Services.VIEWS_SQL);
+
+      tables_category.clear ();
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.TABLE, row.values[0], row.values[1], "");
+
+        tables_category.add (item);
+      }
+
+      tables_category.name = @"Tables ($(result.rows.size))";
+      tables_category.expanded = true;
+    }
+
+    private void on_views_complete (Services.QueryResult result) {
+      functions_command.execute (Services.FUNCTIONS_SQL);
+
+      views_category.clear ();
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.VIEW, row.values[0], row.values[1], "");
+        
+        views_category.add (item);
+      }
+
+      views_category.badge = @"$(result.rows.size)"; 
+      views_category.name = @"Views ($(result.rows.size))";
+      views_category.expanded = false;
+    }
+
+    private void on_functions_complete (Services.QueryResult result) {
+      functions_category.clear ();
+
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.FUNCTION, row.values[0], row.values[1], row.values[2]);
+
+        functions_category.add (item);
+      }
+
+      functions_category.name = @"Functions ($(result.rows.size))";
+      functions_category.expanded = false;
+    }
+
+    private void on_columns_complete (Services.QueryResult result) {
+      selected_item.clear ();
+
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem(PostgresObject.COLUMN, row.values[0], row.values[1], "");
+      
+        selected_item.add (item);
+      }
+
+      selected_item.expanded = true;
     }
   }
 }

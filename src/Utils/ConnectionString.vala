@@ -72,6 +72,10 @@ namespace Peeq.Utils {
 						result.keys.set (k, v);
 					}
 				}
+
+				if (result.keys.get("group") == null) {
+					result.keys.set("group", "Servers");
+				}
 			} catch (GLib.RegexError e) {
 				print ("A RegexError occurred.");
 			}

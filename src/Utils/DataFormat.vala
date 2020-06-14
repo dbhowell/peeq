@@ -27,13 +27,17 @@ namespace Peeq.Utils {
       }
 
       if (format == PG_TYPE_JSON) {
-        Json.Node? json_value = Json.from_string (value);
-        
-        if (json_value == null) {
-          return "null";
-        }
+        try {
+          Json.Node? json_value = Json.from_string (value);
+          
+          if (json_value == null) {
+            return "null";
+          }
 
-        return Json.to_string(json_value, true);
+          return Json.to_string(json_value, true);
+        } catch (GLib.Error e) {
+          print ("An error occurred.");
+        }
       }
 
       return @"\"$(value)\"";
