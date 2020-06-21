@@ -30,6 +30,7 @@ namespace Peeq {
     private Widgets.ListFooter footer;
     private Gtk.Dialog? preferences_dialog = null;
     private Gee.ArrayList<string> groups = new Gee.ArrayList<string> ();
+    private Widgets.ServerListItem selected_item = null;
 
     public MainWindow (Peeq.Application peeq_app) {
       Object (
@@ -125,7 +126,6 @@ namespace Peeq {
     }
 
     public bool quit_source_func () {
-      print("quit_source_func ()\n");
       save_settings ();
       destroy ();
 
@@ -172,6 +172,9 @@ namespace Peeq {
     }
 
     private void on_server_selected (Gtk.ListBoxRow? row) {
+      footer.button_edit.sensitive = (row != null);
+      footer.button_remove.sensitive = (row != null);
+
       if (row == null) {
         return;
       }
@@ -188,13 +191,16 @@ namespace Peeq {
     private void on_new_connection () {
       var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
 
-      dialog.response.connect (on_edit_server_response);
+      dialog.response.connect (on_new_server_response);
       dialog.show_all ();
     }
 
     private void on_edit_connection () {
       var dialog = new Dialogs.EditServer ((Gtk.Window) this.get_toplevel (), get_groups ());
+      var item = (Widgets.ServerListItem) this.server_list.get_selected_row ();
+      this.selected_item = item;
 
+      dialog.set_values (item.page.server.connection_string);
       dialog.response.connect (on_edit_server_response);
       dialog.show_all ();
     }
@@ -232,12 +238,10 @@ namespace Peeq {
         server_list.remove (item);
 
         save_settings ();
-      } else {
-        GLib.print ("null\n");
       }
     }
 
-    private void on_edit_server_response (Gtk.Dialog source, int response_id) {
+    private void on_new_server_response (Gtk.Dialog source, int response_id) {
       if (response_id == Gtk.ResponseType.OK) {
         Dialogs.EditServer dialog = (Dialogs.EditServer) source;
         Utils.ConnectionString cs = new Utils.ConnectionString ();
@@ -251,6 +255,30 @@ namespace Peeq {
 
         create_server_item (cs);
         save_settings ();
+      }
+
+      source.destroy ();
+    }
+
+    private void on_edit_server_response (Gtk.Dialog source, int response_id) {
+      if (response_id == Gtk.ResponseType.OK) {
+        Dialogs.EditServer dialog = (Dialogs.EditServer) source;
+        Utils.ConnectionString cs = this.selected_item.page.server.connection_string;
+        
+        cs.set("group", dialog.group);
+        cs.set("server_name", dialog.server_name);
+        cs.set("host", dialog.host);
+        cs.set("port", dialog.port);
+        cs.set("user", dialog.user);
+        cs.set("password", dialog.pass);
+        cs.set("maintenance_db", dialog.maintenance_db);
+
+        add_group (cs.get("group"));
+        save_settings ();
+
+        this.selected_item.update ();
+        this.server_list.invalidate_sort ();
+        this.server_list.invalidate_headers ();
       }
 
       source.destroy ();

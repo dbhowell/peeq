@@ -34,7 +34,8 @@ namespace Peeq.Dialogs {
 		private Gtk.Entry entry_user;
 		private Gtk.Entry entry_pass;
 		private Gtk.Entry entry_maintenance_db;
-		private Gtk.ComboBox entry_group;
+		private Gtk.ComboBoxText entry_group;
+		private Gtk.ColorButton color_button;
 
 		private Gtk.Button button_save;
 		private Gtk.Button button_cancel;
@@ -105,6 +106,7 @@ namespace Peeq.Dialogs {
 			label_user.halign = Gtk.Align.END;
 			label_pass.halign = Gtk.Align.END;
 			label_maintenance_db.halign = Gtk.Align.END;
+			label_colour.halign = Gtk.Align.END;
 
 			label_group.xalign = 1;
 			label_name.xalign = 1;
@@ -113,8 +115,9 @@ namespace Peeq.Dialogs {
 			label_user.xalign = 1;
 			label_pass.xalign = 1;
 			label_maintenance_db.xalign = 1;
+			label_colour.xalign = 1;
 
-
+/*
 			Gtk.ListStore liststore = new Gtk.ListStore (1, typeof (string));
 
 			for (int i = 0; i < groups.length; i++){
@@ -124,18 +127,27 @@ namespace Peeq.Dialogs {
 			}
 
 			entry_group = new Gtk.ComboBox.with_model_and_entry (liststore);
+*/
+			entry_group = new Gtk.ComboBoxText.with_entry ();
+			for (int i = 0; i < groups.length; i++){
+				entry_group.append_text (groups[i]);
+			}
 
+			((Gtk.Entry)entry_group.get_child ()).set_text ("Servers");
+
+/*
 			Gtk.CellRendererText cell = new Gtk.CellRendererText ();
 			entry_group.pack_start (cell, false);
 			entry_group.set_entry_text_column (0);
 			entry_group.set_active (0);
-			
+*/		
 			entry_name = new Gtk.Entry ();
 			entry_host = new Gtk.Entry ();
 			entry_port = new Gtk.Entry ();
 			entry_user = new Gtk.Entry ();
 			entry_pass = new Gtk.Entry ();
 			entry_maintenance_db = new Gtk.Entry ();
+			color_button = new Gtk.ColorButton ();
 
 			entry_pass.set_visibility (false);
 			entry_port.set_text ("5432");
@@ -165,6 +177,9 @@ namespace Peeq.Dialogs {
 			grid.attach (label_maintenance_db, 0, 6, 1, 1);
 			grid.attach (entry_maintenance_db, 1, 6, 1, 1);
 
+			grid.attach (label_colour, 0, 7, 1, 1);
+			grid.attach (color_button, 1, 7, 1, 1);
+
 			get_content_area ().add (grid);
 
 			// add_button ("_Test Connection", Gtk.ResponseType.HELP);
@@ -173,6 +188,7 @@ namespace Peeq.Dialogs {
 
 			response.connect (on_response);
 			show_all ();
+			set_modal (true);
 		}
 
 		private void on_response (Gtk.Dialog source, int response_id) {
@@ -183,6 +199,16 @@ namespace Peeq.Dialogs {
 
 		private void test_connection () {
 
+		}
+
+		public void set_values (Utils.ConnectionString connection_string) {
+			((Gtk.Entry)entry_group.get_child ()).set_text (connection_string.get("group"));
+			entry_name.text = connection_string.get("server_name");
+			entry_host.text = connection_string.get("host");
+			entry_port.text = connection_string.get("port");
+			entry_user.text = connection_string.get("user");
+			entry_pass.text = connection_string.get("password");
+			entry_maintenance_db.text = connection_string.get("maintenance_db");
 		}
 	}
 }

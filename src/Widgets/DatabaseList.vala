@@ -32,18 +32,18 @@ namespace Peeq.Widgets {
 			show_no_items (!show);
 		}
 
-		public void add_database_to_list (string database_name) {
-			DatabaseListItem item = new DatabaseListItem (database_name, _("Disconnected"));
+		public void add_database_to_list (string database_name, string database_size) {
+			DatabaseListItem item = new DatabaseListItem (database_name, database_size);
 
 			add (item);
 			show_all ();
 		}
 
-		public void update_items (string[] items) {
+		public void update_items (Gee.ArrayList<string>[] items) {
 			clear ();
 
 			foreach (var i in items) {
-				add (new DatabaseListItem (i, _("Disconnected")));
+				add (new DatabaseListItem (i[0], i[1]));
 			}
 		}
 

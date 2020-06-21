@@ -71,13 +71,19 @@ namespace Peeq.Widgets {
 
       row_grid.attach (overlay, 0, 0, 1, 2);
       row_grid.attach (row_title, 1, 0, 1, 1);
-      // row_grid.attach (hbox, 1, 1, 1, 1);
+      row_grid.attach (hbox, 1, 1, 1, 1);
 
 			add (row_grid);
 
 			bind_property ("title", row_title, "label");
       bind_property ("subtitle", row_description, "label");
       bind_property ("icon-name", row_image, "icon-name");
+
+			notify.connect ((s, p) => {
+				if (p.name == "subtitle") {
+					status_image.icon_name = (this.subtitle == "<span font_size='small'>N/A</span>") ? "user-busy" : "user-offline";
+				}
+			});
 
 			show_all ();
 		}

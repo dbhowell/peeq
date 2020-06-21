@@ -19,7 +19,7 @@
 
 namespace Peeq.Services {
 	public class ServerConnection : GLib.Object {
-		public signal void ready (string[] databases);
+		public signal void ready (Gee.ArrayList<string>[] databases);
 		public signal void error (string message);
 		public signal void busy (bool working);
 
@@ -97,14 +97,16 @@ namespace Peeq.Services {
 
 		private void on_version_complete (QueryResult result) {
 			version = result.rows[0].values[0];
-			query_command.execute ("SELECT datname AS db_name FROM pg_catalog.pg_database ORDER BY db_name");
+			query_command.execute (Services.DATABASE_LIST);
 		}
 
 		private void on_query_complete (QueryResult result) {
-			string[] databases = {};
+			Gee.ArrayList<string>[] databases = {};
 
 			foreach (var r in result.rows) {
-				databases += r.values[0];
+				//string[] item = {r.values[0], r.values[1]};
+
+				databases += r.values;
 			}
 
 			connected = true;

@@ -47,8 +47,14 @@ namespace Peeq.Widgets {
 
 			this.page.server.notify["connected"].connect ((s, p) => {
 				status_image.icon_name = (this.page.server.connected) ? "user-available" : "user-offline";
-				this.subtitle = (this.page.server.connected) ? "<span font_size='small'>" + _("Connected") + "</span>" : "<span font_size='small'>" + _("Disconnected") + "</span>";
+				this.subtitle = (this.page.server.connected) ? "<span font_size='small'>" + page.server.version + "</span>" : "<span font_size='small'>" + _("Disconnected") + "</span>";
 			});
+		}
+
+		public void update () {
+			this.page.group = this.page.server.connection_string.get ("group");
+			this.group = this.page.group;
+			this.title = this.page.server.server_name;
 		}
 
 		construct {

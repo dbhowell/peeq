@@ -154,7 +154,7 @@ namespace Peeq.Widgets {
 			busy (working);
 		}
 
-		private void on_server_ready (string[] databases) {
+		private void on_server_ready (Gee.ArrayList<string>[] databases) {
 			database_list.update_items (databases);
 			version_label.label = server.version;
 		}

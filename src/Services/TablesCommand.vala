@@ -51,4 +51,15 @@ namespace Peeq.Services {
     AND external_name IS NULL
     ORDER BY routine_name;
   """;
+
+  public const string DATABASE_LIST = """
+    SELECT
+      datname AS db_name,
+      CASE 
+        WHEN pg_catalog.has_database_privilege(datname, 'CONNECT')
+        THEN pg_catalog.pg_size_pretty(pg_catalog.pg_database_size(datname))
+        ELSE 'N/A'
+      END AS db_size
+    FROM pg_catalog.pg_database ORDER BY db_name
+  """;
 }

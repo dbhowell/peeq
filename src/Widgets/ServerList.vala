@@ -62,7 +62,7 @@ namespace Peeq.Widgets {
 
 		private void title_rows (ListBoxRow row, ListBoxRow? before) {
 			ServerListItem server = (ServerListItem) row;
-			
+
 			if (before != null) {
 				ServerListItem server_before = (ServerListItem) before;
 
