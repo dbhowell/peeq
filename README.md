@@ -1,4 +1,4 @@
-# Peeq (https://travis-ci.org/dbhowell/peeq.svg?branch=master)
+# Peeq [![Build Status](https://travis-ci.org/dbhowell/peeq.svg?branch=master)](https://travis-ci.org/dbhowell/peeq)
 [![Get it on AppCenter](https://appcenter.elementary.io/badge.svg)](https://appcenter.elementary.io/com.github.dbhowell.peeq)
 
 ![Screenshot](data/screenshot_001.png?raw=true)
