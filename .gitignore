@@ -3,3 +3,4 @@ builddir
 src/config.vala
 *~
 meson
+.flatpak-builder

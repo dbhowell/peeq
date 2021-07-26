@@ -57,7 +57,7 @@ namespace Peeq {
     }
 
     public MainWindow? get_last_window () {
-      unowned List<weak Gtk.Window> windows = get_windows ();
+      unowned List<Gtk.Window> windows = get_windows ();
       return windows.length () > 0 ? windows.last ().data as MainWindow : null;
     }
 
