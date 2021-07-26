@@ -74,7 +74,11 @@ namespace Peeq.Widgets {
     }
 
     protected virtual bool on_view_key_press_event (Gdk.EventKey event) {
-      if (event.state == Gdk.ModifierType.CONTROL_MASK && (event.keyval == 99 || event.keyval == 106) && selected_row_index > -1) {
+      if (
+        (event.state & Gdk.ModifierType.CONTROL_MASK) != 0 && 
+        (event.keyval == 99 || event.keyval == 106) 
+        && selected_row_index > -1
+      ) {
         TreeModel model;
         GLib.List<TreePath> paths = view.get_selection ().get_selected_rows (out model);
         ArrayList<QueryResult.Row> rows = new ArrayList<QueryResult.Row> ();

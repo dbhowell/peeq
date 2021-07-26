@@ -64,6 +64,15 @@ namespace Peeq.Utils {
     public static string fromRows (Gee.ArrayList<QueryResult.Field> fields, Gee.ArrayList<QueryResult.Row> rows) {
       var builder = new StringBuilder ();
 
+      for (var i=0; i < fields.size; i++) {
+        builder.append(fields[i].name);
+
+        if (i < fields.size - 1) {
+          builder.append (DELIMITER);
+        }
+      }
+      builder.append (NEW_LINE);
+
       for (var i=0; i < rows.size; i++) {
         builder.append (DataFormat.formatRow(fields, rows[i]));
       }
