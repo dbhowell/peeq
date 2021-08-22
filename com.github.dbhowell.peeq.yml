@@ -21,6 +21,7 @@ finish-args:
   - '--socket=wayland'
   - '--share=network'
   - '--filesystem=home'
+  - '--system-talk-name=org.freedesktop.Accounts'
 
 # This section is where you list all the source code required to build your app.
 # If we had external dependencies that weren't included in our SDK, we would list
