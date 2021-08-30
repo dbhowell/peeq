@@ -78,7 +78,10 @@ namespace Peeq.Dialogs {
 		}
 
 		public EditServer (Gtk.Window parent, string[]? groups) {
-			Object (transient_for: parent);
+			Object (
+				transient_for: parent,
+				title: _("Edit Server")
+			);
 
 			this.groups = groups;
 			init_layout ();
