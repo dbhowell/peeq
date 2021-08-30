@@ -47,9 +47,6 @@ namespace Peeq {
     }
 
     private void init_layout () {
-      var gtk_settings = Gtk.Settings.get_default ();
-      gtk_settings.gtk_application_prefer_dark_theme = Peeq.settings.prefer_dark_style;
-
       headerbar = new Widgets.MainHeaderBar ();
       set_titlebar (headerbar);
 
