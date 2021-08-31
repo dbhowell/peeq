@@ -30,7 +30,7 @@ namespace Peeq.Dialogs {
           main_stackswitcher.halign = Gtk.Align.CENTER;
 
           var main_grid = new Gtk.Grid ();
-          main_grid.attach (main_stackswitcher, 0, 0, 1, 1);
+          //main_grid.attach (main_stackswitcher, 0, 0, 1, 1);
           main_grid.attach (main_stack, 0, 1, 1, 1);
 
           get_content_area ().add (main_grid);
