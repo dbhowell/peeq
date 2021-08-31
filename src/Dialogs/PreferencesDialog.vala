@@ -17,11 +17,6 @@ namespace Peeq.Dialogs {
 
       construct {
           var indent_width = new Gtk.SpinButton.with_range (1, 24, 1);
-
-          var general_grid = new Gtk.Grid ();
-          general_grid.column_spacing = 12;
-          general_grid.row_spacing = 6;
-          general_grid.attach (new Granite.HeaderLabel (_("General")), 0, 0, 2, 1);
           
           main_stack = new Gtk.Stack ();
           main_stack.margin = 6;
@@ -77,9 +72,6 @@ namespace Peeq.Dialogs {
           Peeq.settings.schema.bind ("use-system-font", select_font, "sensitive", SettingsBindFlags.INVERT_BOOLEAN);
 
 
-          var general_header = new Granite.HeaderLabel (_("General"));
-
-          content.attach (general_header, 0, 1, 3, 1);
           content.attach (editor_header, 0, 3, 3, 1);
           content.attach (style_label, 0, 4, 1, 1);
           content.attach (style_combo, 1, 4, 2, 1);
