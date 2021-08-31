@@ -27,7 +27,7 @@ namespace Peeq.Widgets {
 
     public QueryCommand query_command;
     
-    Granite.Widgets.CollapsiblePaned paned;
+    Gtk.Paned paned;
     SQLSourceView sql_source_view;
     ResultView result_view;
     ClipboardManager clipboard_manager;
@@ -62,7 +62,7 @@ namespace Peeq.Widgets {
         );
       });
 
-      paned = new Granite.Widgets.CollapsiblePaned(
+      paned = new Gtk.Paned(
         Gtk.Orientation.VERTICAL
       );
 

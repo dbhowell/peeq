@@ -25,9 +25,9 @@ public class Peeq.DatabaseObjectRow : Gtk.ListBoxRow {
   }
 
   construct {
-    Granite.Widgets.Avatar avatar;
+    Hdy.Avatar avatar;
 
-    avatar = new Granite.Widgets.Avatar.with_default_icon (32);
+    avatar = new Hdy.Avatar (32, null, false);
     avatar.margin_start = 1;
 
     var individual_name = new Gtk.Label (name);
