@@ -21,6 +21,15 @@
     </ul>
   </description>
   <releases>
+    <release version="0.6.1" date="2021-09-01" urgency="medium">
+      <description>
+        <p>Fixes</p>
+        <ul>
+          <li>Added support system-based style</li>
+          <li>Removed unecessary widgets in preferences dialog</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.6.0" date="2021-07-26" urgency="medium">
       <description>
         <p>Fixes</p>
