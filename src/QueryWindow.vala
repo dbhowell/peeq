@@ -31,8 +31,14 @@ namespace Peeq {
     Services.QueryCommand views_command;
     Services.QueryCommand functions_command;
     Services.QueryCommand columns_command;
+    Schemas.SchemaCommand schemas_command;
+    Schemas.ExtensionCommand extensions_command;
+    Schemas.SequenceCommand sequences_command;
 
+    Granite.Widgets.SourceList.ExpandableItem database_item;
+    Granite.Widgets.SourceList.ExpandableItem extensions_category = new Granite.Widgets.SourceList.ExpandableItem ("Extensions");
     Granite.Widgets.SourceList.ExpandableItem functions_category = new Granite.Widgets.SourceList.ExpandableItem ("Functions");
+    Granite.Widgets.SourceList.ExpandableItem schemas_category = new Granite.Widgets.SourceList.ExpandableItem ("Schemas");
     Granite.Widgets.SourceList.ExpandableItem sequences_category = new Granite.Widgets.SourceList.ExpandableItem ("Sequences");
     Granite.Widgets.SourceList.ExpandableItem tables_category = new Granite.Widgets.SourceList.ExpandableItem ("Tables");
     Granite.Widgets.SourceList.ExpandableItem views_category = new Granite.Widgets.SourceList.ExpandableItem ("Views");
@@ -73,18 +79,24 @@ namespace Peeq {
       tables_command = new Services.QueryCommand.with_connection (connection);
       views_command = new Services.QueryCommand.with_connection (connection);
       columns_command = new Services.QueryCommand.with_connection (connection);
+      schemas_command = new Schemas.SchemaCommand.with_connection (connection);
+      extensions_command = new Schemas.ExtensionCommand.with_connection (connection);
+      sequences_command = new Schemas.SequenceCommand.with_connection (connection);
       
       connection.busy.connect (on_busy);
       connection.ready.connect (() => {
         this.set_title (@"$(connection.host)/$(connection.name)");
-
-        tables_command.execute (Services.TABLES_SQL);
+        
+        extensions_command.run ();
       });
 
       this.tables_command.error.connect ((message) => {
         print(@"$(message)\n");
       });
 
+      this.extensions_command.complete.connect(this.on_extensions_complete);
+      this.sequences_command.complete.connect(this.on_sequences_complete);
+      this.schemas_command.complete.connect(this.on_schemas_complete);
       this.tables_command.complete.connect (this.on_tables_complete);
       this.views_command.complete.connect (this.on_views_complete);
       this.functions_command.complete.connect (this.on_functions_complete);
@@ -116,8 +128,12 @@ namespace Peeq {
 
       var source_list = new Granite.Widgets.SourceList ();
       source_list.set_size_request (240, -1);
+
       source_list.item_selected.connect ((item) => {
-        selected_item = (Widgets.PostgresListItem) item;
+        selected_item = item as Widgets.PostgresListItem;
+        if (selected_item == null) {
+          return;
+        }
 
         if (selected_item.postgres_object == PostgresObject.TABLE) {
           columns_command.execute (@"SELECT column_name, data_type FROM information_schema.columns WHERE table_schema='$(selected_item.schema)' AND table_name='$(selected_item.name)' ORDER BY column_name");
@@ -127,19 +143,31 @@ namespace Peeq {
           columns_command.execute (@"SELECT column_name, data_type FROM information_schema.columns WHERE table_schema='$(selected_item.schema)' AND table_name='$(selected_item.name)' ORDER BY column_name");
         }
 
-        if (selected_item.postgres_object == PostgresObject.FUNCTION) {
+        if (
+          selected_item.postgres_object == PostgresObject.FUNCTION ||
+          selected_item.postgres_object == PostgresObject.VIEW
+        ) {
           var tab = create_tab (selected_item.definition);
           notebook.insert_tab (tab, -1);
           notebook.current = tab;
         }
       });
-      
-      var root = source_list.root;
 
-      root.add (functions_category);
-      root.add (sequences_category);
-      root.add (tables_category);
-      root.add (views_category);
+      database_item = new Granite.Widgets.SourceList.ExpandableItem ("Database");
+      
+      source_list.root.add(database_item);
+      
+      tables_category.activatable = new ThemedIcon ("view-refresh-symbolic");
+      tables_category.action_activated.connect (() => {
+        tables_command.execute (Services.TABLES_SQL);
+      });
+
+      database_item.add (extensions_category);
+      database_item.add (schemas_category);
+      database_item.add (functions_category);
+      database_item.add (sequences_category);
+      database_item.add (tables_category);
+      database_item.add (views_category);
 
       var paned = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
       paned.pack1 (source_list, false, true);
@@ -148,6 +176,7 @@ namespace Peeq {
       add (paned);
 
       resize (800, 600);
+      database_item.expanded = true;
     }     
 
     void on_busy (bool working) {
@@ -285,6 +314,32 @@ namespace Peeq {
 
     }
 
+    private void on_extensions_complete (Services.QueryResult result) {
+      schemas_command.run ();
+
+      extensions_category.clear ();
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.EXTENSION, row.values[1], row.values[2], "");
+
+        extensions_category.add (item);
+      }
+
+      extensions_category.badge = @"$(result.rows.size)";      
+    }
+
+    private void on_sequences_complete (Services.QueryResult result) {
+      tables_command.execute (Services.TABLES_SQL);
+
+      sequences_category.clear ();
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.SEQUENCE, row.values[0], row.values[1], "");
+
+        sequences_category.add (item);
+      }
+
+      sequences_category.badge = @"$(result.rows.size)";
+    }
+
     private void on_tables_complete (Services.QueryResult result) {
       views_command.execute (Services.VIEWS_SQL);
 
@@ -295,8 +350,20 @@ namespace Peeq {
         tables_category.add (item);
       }
 
-      tables_category.name = @"Tables ($(result.rows.size))";
-      tables_category.expanded = true;
+      tables_category.badge = @"$(result.rows.size)";      
+    }
+
+    private void on_schemas_complete (Services.QueryResult result) {
+      sequences_command.run ();
+
+      schemas_category.clear ();
+      foreach (var row in result.rows) {
+        var item = new PostgresListItem (PostgresObject.SCHEMA, row.values[0], row.values[1], "");
+
+        schemas_category.add (item);
+      }
+
+      schemas_category.badge = @"$(result.rows.size)";
     }
 
     private void on_views_complete (Services.QueryResult result) {
@@ -304,13 +371,13 @@ namespace Peeq {
 
       views_category.clear ();
       foreach (var row in result.rows) {
-        var item = new PostgresListItem (PostgresObject.VIEW, row.values[0], row.values[1], "");
+        var item = new PostgresListItem (PostgresObject.VIEW, row.values[0], row.values[1], row.values[2]);
         
         views_category.add (item);
       }
 
-      views_category.badge = @"$(result.rows.size)"; 
-      views_category.name = @"Views ($(result.rows.size))";
+      views_category.name = @"Views";
+      views_category.badge = @"$(result.rows.size)";
       views_category.expanded = false;
     }
 
@@ -323,7 +390,8 @@ namespace Peeq {
         functions_category.add (item);
       }
 
-      functions_category.name = @"Functions ($(result.rows.size))";
+      functions_category.name = @"Functions";
+      functions_category.badge = @"$(result.rows.size)";
       functions_category.expanded = false;
     }
 

@@ -18,6 +18,7 @@ executable(
   'QueryWindow.vala',
   'Dialogs/EditServer.vala',
   'Dialogs/PreferencesDialog.vala',
+  'Schemas/Schemas.vala',
   'Widgets/DatabaseObjectRow.vala',
   'Widgets/MainHeaderBar.vala',
   'Widgets/ServerList.vala',

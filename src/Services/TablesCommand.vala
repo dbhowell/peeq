@@ -19,11 +19,14 @@
 
 namespace Peeq.Services {
   public enum PostgresObject {
+    EXTENSION,
     TABLE,
     FUNCTION,
     VIEW,
     TRIGGER,
-    COLUMN
+    COLUMN,
+    SCHEMA,
+    SEQUENCE
   }
 
   public const string TABLES_SQL = """

@@ -35,7 +35,13 @@ public class Peeq.Widgets.PostgresListItem : Granite.Widgets.SourceList.Expandab
     this.definition = definition;
 
     if (postgres_object == COLUMN) {
-      this.name = @"$(this.schema) ($(this.pg_name))";
+      this.name = @"$(this.schema)";
+      this.badge = @"$(this.pg_name)";
+    }
+
+    if (postgres_object == EXTENSION) {
+      this.name = @"$(this.schema)";
+      this.badge = @"$(this.pg_name)";
     }
 
 //    this.icon = new Gtk.Image.from_icon_name ("x-office-spreadsheet", IconSize.DND);
