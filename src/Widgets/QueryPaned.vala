@@ -33,6 +33,9 @@ namespace Peeq.Widgets {
     ClipboardManager clipboard_manager;
     ActionBar action_bar;
     Label status_label;
+    Label time_label;
+    GLib.Timer timer;
+    uint timeout_id;
 
     public QueryPaned.with_conninfo (string conninfo) {
       this.query_command = new QueryCommand.with_conninfo (conninfo);
@@ -42,14 +45,20 @@ namespace Peeq.Widgets {
       });
 
       this.query_command.complete.connect ((result) => {
+        Source.remove (timeout_id);
+        timer.stop ();
+
         status_label.label = _(@"$(result.rows.size) Records found.");
+        time_label.label = format_duration ();
+
         set_result (result);
       });
 
       init_layout ();
     }
 
-    void init_layout () {
+    void init_layout () {      
+      timer = new GLib.Timer ();      
       orientation = Orientation.VERTICAL;
       clipboard_manager = new ClipboardManager ();
       sql_source_view = new SQLSourceView ();
@@ -72,10 +81,14 @@ namespace Peeq.Widgets {
 
       status_label = new Label ("");
       status_label.margin = 12;
+
+      time_label = new Label ("");
+      time_label.margin = 12;
       
       action_bar = new Gtk.ActionBar ();
       action_bar.get_style_context ().add_class (Gtk.STYLE_CLASS_INLINE_TOOLBAR);
       action_bar.pack_end (status_label);
+      action_bar.pack_start (time_label);
 
       add (paned);
       add (action_bar);
@@ -87,7 +100,22 @@ namespace Peeq.Widgets {
 
     public void execute_query () {
       status_label.label = _(@"Running...");
+      timer.reset ();
+      timer.start ();
+      timeout_id = GLib.Timeout.add (50, on_timeout, GLib.Priority.DEFAULT);
+
       query_command.execute (sql_source_view.get_sql ());
+    }
+
+    private bool on_timeout () {
+      if (timer.elapsed (null) > 1.0f) {
+        Source.remove (timeout_id);
+        timeout_id = GLib.Timeout.add (500, on_timeout, GLib.Priority.DEFAULT);
+      }
+
+      time_label.label = @"$(format_duration ())..";
+
+      return true;
     }
 
     public void cancel_query () {
@@ -100,6 +128,18 @@ namespace Peeq.Widgets {
 
     public string get_text () {
       return sql_source_view.get_text ();
+    }
+
+    private string format_duration () {
+      double elapsed = timer.elapsed (null);
+      int s = (int)(elapsed);
+      int ms = (int)(elapsed * 100.0f);
+
+      if (elapsed < 1.0f) {        
+        return @"$(ms) ms.";
+      }
+
+      return @"$(s) seconds.";
     }
   }
 }
