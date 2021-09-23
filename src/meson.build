@@ -36,6 +36,7 @@ executable(
   'Widgets/RowsView.vala',
   'Widgets/QueryPaned.vala',
   'Widgets/QueryHeaderBar.vala',
+  'Widgets/ParameterList/ParameterListBox.vala',
   'Services/Settings.vala',
   'Services/Connection.vala',
   'Services/QueryCommand.vala',

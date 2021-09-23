@@ -31,7 +31,7 @@ namespace Peeq.Services {
 			}
 		}
 
-		private Connection connection;
+		public Connection connection;
 		private QueryCommand query_command;
 		private QueryCommand version_command;
 
