@@ -28,6 +28,7 @@ namespace Peeq.Widgets {
     Gtk.Notebook notebook;
     RowsView rows_view;
     MessagesView messages_view;
+    QueryResult result;
 
     public ResultView () {
       init_layout ();
@@ -47,6 +48,8 @@ namespace Peeq.Widgets {
     }
 
     public void set_result (QueryResult result) {
+      this.result = result;
+
       rows_view.set_result (result);
       messages_view.set_result (result);
 
@@ -65,6 +68,10 @@ namespace Peeq.Widgets {
       }
     }
 
-  } 
-  
+    public QueryResult get_result () {
+        return result;
+    }
+
+  }
+
 }

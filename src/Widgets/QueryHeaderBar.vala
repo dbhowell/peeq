@@ -17,12 +17,13 @@
 * Boston, MA 02110-1301 USA
 */
 
-namespace Peeq.Widgets { 
+namespace Peeq.Widgets {
   public class QueryHeaderBar : Gtk.HeaderBar {
     public signal void execute_query ();
     public signal void cancel_query ();
     public signal void open_file ();
     public signal void save_file ();
+    public signal void save_result ();
 
     Gtk.Spinner spinner;
     Gtk.MenuButton app_menu;
@@ -31,7 +32,7 @@ namespace Peeq.Widgets {
     Gtk.Button open_button;
     Gtk.Button save_button;
     Gtk.Button save_as_button;
-    
+
     public Gtk.AccelGroup accel_group;
 
     public bool working {
@@ -80,6 +81,9 @@ namespace Peeq.Widgets {
       save_as_button = new Gtk.Button ();
       save_as_button.image = new Gtk.Image.from_icon_name ("document-save-as", Gtk.IconSize.LARGE_TOOLBAR);
       save_as_button.tooltip_text = _("Save As...");
+      save_as_button.clicked.connect (() => {
+        save_result ();
+      });
 
       execute_button = new Gtk.Button ();
       execute_button.image = new Gtk.Image.from_icon_name ("media-playback-start", Gtk.IconSize.LARGE_TOOLBAR);
@@ -102,8 +106,7 @@ namespace Peeq.Widgets {
       pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
       pack_start (execute_button);
       pack_start (cancel_button);
-      pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-//      pack_start (save_as_button);
+      pack_start (save_as_button);
 
 //      pack_end (app_menu);
       pack_end (spinner);

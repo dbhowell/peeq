@@ -21,12 +21,12 @@ using Peeq.Services;
 using Peeq.Utils;
 using Gtk;
 
-namespace Peeq.Widgets { 
+namespace Peeq.Widgets {
   public class QueryPaned : Gtk.Box {
     public signal void is_working (bool working);
 
     public QueryCommand query_command;
-    
+
     Gtk.Paned paned;
     SQLSourceView sql_source_view;
     ResultView result_view;
@@ -39,7 +39,7 @@ namespace Peeq.Widgets {
 
     public QueryPaned.with_conninfo (string conninfo) {
       this.query_command = new QueryCommand.with_conninfo (conninfo);
-      
+
       this.query_command.error.connect ((message) => {
         //print(@"$(message)\n");
       });
@@ -57,15 +57,15 @@ namespace Peeq.Widgets {
       init_layout ();
     }
 
-    void init_layout () {      
-      timer = new GLib.Timer ();      
+    void init_layout () {
+      timer = new GLib.Timer ();
       orientation = Orientation.VERTICAL;
       clipboard_manager = new ClipboardManager ();
       sql_source_view = new SQLSourceView ();
       result_view = new ResultView ();
       result_view.on_copy.connect ((fields, rows, is_json) => {
         clipboard_manager.set_text (
-          is_json ?  
+          is_json ?
             Utils.JsonFormat.fromRows(fields, rows) :
             Utils.DataFormat.fromRows(fields, rows)
         );
@@ -84,7 +84,7 @@ namespace Peeq.Widgets {
 
       time_label = new Label ("");
       time_label.margin = 12;
-      
+
       action_bar = new Gtk.ActionBar ();
       action_bar.get_style_context ().add_class (Gtk.STYLE_CLASS_INLINE_TOOLBAR);
       action_bar.pack_end (status_label);
@@ -130,12 +130,22 @@ namespace Peeq.Widgets {
       return sql_source_view.get_text ();
     }
 
+    public QueryResult get_result () {
+      return result_view.get_result ();
+
+    }
+
+    public string get_result_csv () {
+      var result = result_view.get_result ();
+      return Utils.DataFormat.fromRows(result.fields, result.rows);
+    }
+
     private string format_duration () {
       double elapsed = timer.elapsed (null);
       int s = (int)(elapsed);
       int ms = (int)(elapsed * 100.0f);
 
-      if (elapsed < 1.0f) {        
+      if (elapsed < 1.0f) {
         return @"$(ms) ms.";
       }
 
