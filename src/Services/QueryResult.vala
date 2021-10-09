@@ -19,7 +19,7 @@
 
 using Gee;
 
-namespace Peeq.Services { 
+namespace Peeq.Services {
   public class QueryResult {
     public class Row {
       private ArrayList<string> _values = new ArrayList<string> ();
@@ -51,7 +51,7 @@ namespace Peeq.Services {
       public string to_string () {
         uint id = (uint)ftype;
         return @"Field ( name='$(name)', type=$(id), format=$(format), number=$(number) )";
-      }  
+      }
     }
 
     ArrayList<Row> _rows = new ArrayList<Row> ();
@@ -94,7 +94,7 @@ namespace Peeq.Services {
     }
 
     public QueryResult () {
-      
+
     }
 
     public QueryResult.with_fields (ArrayList<Field> fields) {
@@ -124,15 +124,15 @@ namespace Peeq.Services {
 
       for (int i=0; i < result.get_n_tuples (); i++) {
         var row = new Row ();
-        
+
         for (int j=0; j < result.get_n_fields (); j++) {
           row.values.add (result.get_value (i, j));
         }
-  
+
         item.rows.add(row);
       }
 
       return item;
     }
-  }  
+  }
 }

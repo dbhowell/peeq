@@ -25,7 +25,7 @@ namespace Peeq.Services {
 			Gee.ArrayList<Connection> items;
 
 			if (has_pool (conninfo)) {
-				items = connections.entries[conninfo]; 
+				items = connections.entries[conninfo];
 			} else {
 				items = new Gee.ArrayList<Connection> ();
 
@@ -51,8 +51,6 @@ namespace Peeq.Services {
 					return i;
 				}
 			}
-
-			
-		} 
+		}
 	}
 }

@@ -21,12 +21,12 @@ using Granite.Widgets;
 using Peeq.Widgets;
 using Peeq.Services;
 
-namespace Peeq { 
+namespace Peeq {
   public class QueryWindow : Gtk.Window {
     Widgets.QueryHeaderBar headerbar;
     Services.Connection connection;
     DynamicNotebook notebook;
-    
+
     Services.QueryCommand tables_command;
     Services.QueryCommand views_command;
     Services.QueryCommand functions_command;
@@ -64,14 +64,14 @@ namespace Peeq {
 
       connection = new Services.Connection ();
       connection.conninfo = conninfo;
-      
+
       init_layout ();
 
       connection.connect_start ();
     }
 
     construct {
-      
+
     }
 
     void init_layout () {
@@ -82,11 +82,11 @@ namespace Peeq {
       schemas_command = new Schemas.SchemaCommand.with_connection (connection);
       extensions_command = new Schemas.ExtensionCommand.with_connection (connection);
       sequences_command = new Schemas.SequenceCommand.with_connection (connection);
-      
+
       connection.busy.connect (on_busy);
       connection.ready.connect (() => {
         this.set_title (@"$(connection.host)/$(connection.name)");
-        
+
         extensions_command.run ();
       });
 
@@ -101,13 +101,14 @@ namespace Peeq {
       this.views_command.complete.connect (this.on_views_complete);
       this.functions_command.complete.connect (this.on_functions_complete);
       this.columns_command.complete.connect (this.on_columns_complete);
-      
+
       headerbar = new Widgets.QueryHeaderBar ();
       add_accel_group (headerbar.accel_group);
       headerbar.execute_query.connect (on_execute_query);
       headerbar.cancel_query.connect (on_cancel_query);
       headerbar.open_file.connect (on_open_file);
       headerbar.save_file.connect (on_save_file);
+      headerbar.save_result.connect (on_save_result);
 
       set_titlebar (headerbar);
 
@@ -154,9 +155,9 @@ namespace Peeq {
       });
 
       database_item = new Granite.Widgets.SourceList.ExpandableItem ("Database");
-      
+
       source_list.root.add(database_item);
-      
+
       tables_category.activatable = new ThemedIcon ("view-refresh-symbolic");
       tables_category.action_activated.connect (() => {
         tables_command.execute (Services.TABLES_SQL);
@@ -177,7 +178,7 @@ namespace Peeq {
 
       resize (800, 600);
       database_item.expanded = true;
-    }     
+    }
 
     void on_busy (bool working) {
       headerbar.working = working || active_pane_working ();
@@ -185,7 +186,7 @@ namespace Peeq {
 
     bool active_pane_working () {
       var pane = get_active_pane ();
-    
+
       if (pane != null) {
         return pane.query_command.connection.working;
       }
@@ -231,7 +232,7 @@ namespace Peeq {
         query_pane.set_text (content);
       }
 
-      return 
+      return
         new Tab (
           @"Query $(notebook.n_tabs + 1)",
           null,
@@ -269,7 +270,7 @@ namespace Peeq {
           FileUtils.get_contents (chooser.get_filename (), out sql_text);
           var tab = create_tab (sql_text);
           tab.label = GLib.Path.get_basename (chooser.get_filename ());
-          
+
           notebook.insert_tab (tab, -1);
           notebook.current = tab;
 
@@ -299,10 +300,39 @@ namespace Peeq {
       filter.add_mime_type ("text/sql");
       filter.add_mime_type ("text/x-sql");
       filter.add_mime_type ("text/plain");
-      
+
       if (chooser.run () == Gtk.ResponseType.ACCEPT) {
         try {
           FileUtils.set_contents (chooser.get_filename (), get_active_pane ().get_text ());
+
+          chooser.close ();
+        } catch (GLib.FileError e) {
+          print ("A FileError occurred.");
+        }
+      } else {
+        chooser.close ();
+      }
+
+    }
+
+    void on_save_result () {
+      Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
+        _("Save CSV file"), this, Gtk.FileChooserAction.SAVE,
+        _("_Cancel"),
+        Gtk.ResponseType.CANCEL,
+        _("_Save"),
+        Gtk.ResponseType.ACCEPT);
+
+      chooser.select_multiple = false;
+
+      Gtk.FileFilter filter = new Gtk.FileFilter ();
+      chooser.set_filter (filter);
+      filter.add_mime_type ("text/csv");
+      filter.add_mime_type ("text/plain");
+
+      if (chooser.run () == Gtk.ResponseType.ACCEPT) {
+        try {
+          FileUtils.set_contents (chooser.get_filename (), get_active_pane ().get_result_csv ());
 
           chooser.close ();
         } catch (GLib.FileError e) {
@@ -324,7 +354,7 @@ namespace Peeq {
         extensions_category.add (item);
       }
 
-      extensions_category.badge = @"$(result.rows.size)";      
+      extensions_category.badge = @"$(result.rows.size)";
     }
 
     private void on_sequences_complete (Services.QueryResult result) {
@@ -350,7 +380,7 @@ namespace Peeq {
         tables_category.add (item);
       }
 
-      tables_category.badge = @"$(result.rows.size)";      
+      tables_category.badge = @"$(result.rows.size)";
     }
 
     private void on_schemas_complete (Services.QueryResult result) {
@@ -372,7 +402,7 @@ namespace Peeq {
       views_category.clear ();
       foreach (var row in result.rows) {
         var item = new PostgresListItem (PostgresObject.VIEW, row.values[0], row.values[1], row.values[2]);
-        
+
         views_category.add (item);
       }
 
@@ -400,7 +430,7 @@ namespace Peeq {
 
       foreach (var row in result.rows) {
         var item = new PostgresListItem(PostgresObject.COLUMN, row.values[0], row.values[1], "");
-      
+
         selected_item.add (item);
       }
 
