@@ -17,6 +17,8 @@
 * Boston, MA 02110-1301 USA
 */
 
+using Peeq.Services;
+
 namespace Peeq.Widgets {
 	public class ServerPage : Gtk.Grid {
 		public signal void database_activated (Services.ServerConnection server, string database_name);
@@ -39,6 +41,9 @@ namespace Peeq.Widgets {
 		private Gtk.Label error_label;
     private Gtk.Stack stack;
     private Gtk.StackSwitcher stack_switcher;
+    private ParameterListBox parameter_list;
+
+    private QueryCommand parameter_command;
 
 		public ServerPage.with_conninfo (Utils.ConnectionString connection_string) {
 			server = new Services.ServerConnection.with_connection_string (connection_string);
@@ -122,8 +127,11 @@ namespace Peeq.Widgets {
     private void init_info () {
       var frame = new Gtk.Frame (null);
 
+      frame.vexpand = true;
       version_label = new Gtk.Label ("");
-      frame.add (version_label);
+      parameter_list = new ParameterListBox ();
+
+      frame.add (parameter_list);
 
       stack.add_titled (frame, "Info", _("Info"));
     }
@@ -157,6 +165,11 @@ namespace Peeq.Widgets {
 		private void on_server_ready (Gee.ArrayList<string>[] databases) {
 			database_list.update_items (databases);
 			version_label.label = server.version;
+      
+			parameter_command = new QueryCommand.with_connection (server.connection);
+			parameter_command.complete.connect (parameter_list.load);
+			parameter_command.error.connect (on_server_error);
+      parameter_command.execute ("SHOW ALL");
 		}
 
 		private void on_server_error (string message) {
